@@ -59,6 +59,11 @@ func (e *CodeError) DisableError() *CodeError {
 	return e
 }
 
+func (e *CodeError) Debug() *CodeError {
+	// 解析用途なのにで、何もしない
+	return e
+}
+
 func (e *CodeError) WithLevel(lvl level) *CodeError {
 	return &CodeError{
 		Code:     e.Code,

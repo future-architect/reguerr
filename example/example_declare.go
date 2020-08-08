@@ -1,7 +1,7 @@
 package example
 
 import (
-	"gitlab.com/errcdgen"
+	"gitlab.com/osaki-lab/errcdgen"
 )
 
 // 解析対象

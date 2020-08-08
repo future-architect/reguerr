@@ -3,17 +3,16 @@ package example
 
 import (
 	"errors"
-	"gitlab.com/errcdgen"
+	"gitlab.com/osaki-lab/errcdgen"
 )
 
-// InvalidInputParameterErr format "is invalid input parameter: %v"
+// - format: "${payloard} is invalid input parameter: ${err}"
 // - Level: error
 // - exitCode: 1
 func NewInvalidInputParameterErr(err error, payload map[string]interface{}) *errcdgen.CodeError {
 	return InvalidInputParameterErr.WithArgs(payload).WithError(err)
 }
 
-// 同時に作成される
 func IsInvalidInputParameterErr(err error) bool {
 	var cerr *errcdgen.CodeError
 	if as := errors.As(err, &cerr); as {
