@@ -6,9 +6,6 @@ import (
 	"gitlab.com/osaki-lab/errcdgen"
 )
 
-// - format: "${payloard} is invalid input parameter: ${err}"
-// - Level: error
-// - exitCode: 1
 func NewInvalidInputParameterErr(err error, payload map[string]interface{}) *errcdgen.CodeError {
 	return InvalidInputParameterErr.WithArgs(payload).WithError(err)
 }
