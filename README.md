@@ -2,6 +2,8 @@
 
 errcdgen - error code generator
 
+## 🚧Work In Progress🚧
+
 ## Motivation
 
 業務用システムにおいて、何か不具合が発生した場合に問題切り分けをスムーズにするため、エラーコードを付与することが求められます。
@@ -33,15 +35,11 @@ EOF
 Output is bellow format.
 
 ```go
-const (
-	// error codes
-	InvalidInputParameter    = 10001
-	UpdateConflict           = 10002
-	UserTypeUnregister       = 10003
-
-    InvalidInputParameterErr = NewCodeError(InvalidInputParameter, "invalid input parameter: %v")
-    UpdateConflictErr        = NewCodeError(UpdateConflict, "other user updated: [key:%s]")
-    UserTypeUnregisterErr    = NewCodeError(UserTypeUnregister, "not found user type: [%v]")
+const ( 
+  
+    InvalidInputParameterErr = NewCodeError("10001", "invalid input parameter: %v")
+    UpdateConflictErr        = NewCodeError("10002", "other user updated: [key:%s]")
+    UserTypeUnregisterErr    = NewCodeError("10003", "not found user type: [%v]")
 )
 
 type CodeError struct {

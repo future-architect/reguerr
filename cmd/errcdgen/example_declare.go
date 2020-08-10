@@ -1,10 +1,9 @@
-package example
+package main
 
 import (
 	"gitlab.com/osaki-lab/errcdgen"
 )
 
-// Target for errcdgen.
 var (
 	InvalidInputParameterErr = errcdgen.NewCodeError("1003", "invalid input parameter: %v").Arg("payload", map[string]interface{}{}) // ラベル付き
 	UpdateConflictErr        = errcdgen.NewCodeError("1003", "other user updated: key=%s")                                           // 引数1つ
