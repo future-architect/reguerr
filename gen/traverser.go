@@ -1,6 +1,7 @@
 package gen
 
 import (
+	"gitlab.com/osaki-lab/errcdgen"
 	"go/ast"
 	"strings"
 )
@@ -14,8 +15,8 @@ type DeclareErr struct {
 	Name       string
 	Code       string
 	Format     string
-	LogLevel   int
-	ExitCode   int
+	LogLevel   errcdgen.Level
+	StatusCode int
 	ErrDisable bool
 }
 
@@ -112,7 +113,7 @@ func traverseDeclareBlock(v ast.Expr) *DeclareErr {
 				Code:       strings.Trim(arg0.Value, `"`),
 				Format:     strings.Trim(arg1.Value, `"`),
 				LogLevel:   0,
-				ExitCode:   0,
+				StatusCode: 0,
 				ErrDisable: false,
 			}
 		}

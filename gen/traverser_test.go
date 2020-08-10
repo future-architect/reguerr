@@ -2,12 +2,13 @@ package gen
 
 import (
 	"github.com/google/go-cmp/cmp"
+	"gitlab.com/osaki-lab/errcdgen"
 	"go/parser"
 	"go/token"
 	"testing"
 )
 
-func TestTraverse1(t *testing.T) {
+func TestTraverse(t *testing.T) {
 	tests := []struct {
 		name string
 		args string
@@ -38,6 +39,30 @@ var (
 						Name:   "UpdateConflictErr",
 						Code:   "1004",
 						Format: "other user updated: key=%s",
+					},
+				},
+			},
+		},
+		{
+			name: "Method chained define",
+			args: `package example
+
+import (
+	"gitlab.com/osaki-lab/errcdgen"
+)
+
+var InvalidInputParameterErr = errcdgen.NewCodeError("1003", "invalid input parameter: %v").DisableError().WithLevel(errcdgen.WarnLevel).WithStatusCode(404)
+`,
+			want: &File{
+				PkgName: "example",
+				Declares: []*DeclareErr{
+					{
+						Name:       "InvalidInputParameterErr",
+						Code:       "1003",
+						Format:     "invalid input parameter: %v",
+						LogLevel:   errcdgen.WarnLevel,
+						StatusCode: 404,
+						ErrDisable: true,
 					},
 				},
 			},
