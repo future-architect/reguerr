@@ -9,9 +9,9 @@ import (
 
 func TestTraverse1(t *testing.T) {
 	tests := []struct {
-		name    string
-		args    string
-		want    []*DeclareErr
+		name string
+		args string
+		want *File
 	}{
 		{
 			name: "No Options",
@@ -26,16 +26,19 @@ var (
 	UpdateConflictErr        = errcdgen.NewCodeError("1004", "other user updated: key=%s")
 )
 `,
-			want:    []*DeclareErr{
-				{
-					Name:       "InvalidInputParameterErr",
-					Code:       "1003",
-					Format:     "invalid input parameter: %v",
-				},
-				{
-					Name:       "UpdateConflictErr",
-					Code:       "1004",
-					Format:     "other user updated: key=%s",
+			want: &File{
+				PkgName: "example",
+				Declares: []*DeclareErr{
+					{
+						Name:   "InvalidInputParameterErr",
+						Code:   "1003",
+						Format: "invalid input parameter: %v",
+					},
+					{
+						Name:   "UpdateConflictErr",
+						Code:   "1004",
+						Format: "other user updated: key=%s",
+					},
 				},
 			},
 		},

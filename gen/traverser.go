@@ -5,22 +5,45 @@ import (
 	"strings"
 )
 
-func Traverse(n ast.Node) ([]*DeclareErr, error) {
+type File struct {
+	PkgName  string
+	Declares []*DeclareErr
+}
+
+type DeclareErr struct {
+	Name       string
+	Code       string
+	Format     string
+	LogLevel   int
+	ExitCode   int
+	ErrDisable bool
+}
+
+func Traverse(n *ast.File) (*File, error) {
+
+	var resp []*DeclareErr
+	for _, decl := range n.Decls {
+		decls, err := traverseAst(decl)
+		if err != nil {
+			return nil, err
+		}
+		if decls != nil {
+			resp = append(resp, decls...)
+		}
+	}
+
+	return &File{
+		PkgName:  n.Name.Name,
+		Declares: resp,
+	}, nil
+}
+
+func traverseAst(n ast.Node) ([]*DeclareErr, error) {
 	var resp []*DeclareErr
 
 	switch n := n.(type) {
-	case *ast.File:
-		for _, decl := range n.Decls {
-			decls, err := Traverse(decl)
-			if err != nil {
-				return nil, err
-			}
-			if decls != nil {
-				resp = append(resp, decls...)
-			}
-		}
 	case *ast.DeclStmt:
-		decls, err := Traverse(n.Decl)
+		decls, err := traverseAst(n.Decl)
 		if err != nil {
 			return nil, err
 		}
@@ -31,7 +54,7 @@ func Traverse(n ast.Node) ([]*DeclareErr, error) {
 	case *ast.GenDecl:
 		if n.Tok.String() == "var" {
 			for _, spec := range n.Specs {
-				decls, err := Traverse(spec)
+				decls, err := traverseAst(spec)
 				if err != nil {
 					return nil, err
 				}

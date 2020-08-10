@@ -16,11 +16,13 @@ limitations under the License.
 package cmd
 
 import (
+	"bytes"
 	"fmt"
 	"github.com/spf13/cobra"
 	"gitlab.com/osaki-lab/errcdgen/gen"
 	"go/parser"
 	"go/token"
+	"io"
 	"os"
 	"path/filepath"
 	"strings"
@@ -60,11 +62,30 @@ var rootCmd = &cobra.Command{
 			return err
 		}
 
-		for _, declare := range traverse {
-			fmt.Printf("%+v\n", declare)
+		var params []gen.Binding
+		for _, declare := range traverse.Declares {
+			//fmt.Printf("%+v\n", declare)
+			params = append(params, gen.Binding{
+				Name: declare.Name,
+			})
 		}
 
-		return nil
+		content, err := gen.Generate(traverse.PkgName, params)
+		if err != nil {
+			return err
+		}
+
+		outFile := strings.Replace(filename, ".go", "_errcdgen.go", 1)
+
+		out, err := os.Create(outFile)
+		if err != nil {
+			return err
+		}
+		defer out.Close()
+
+		_, err = io.Copy(out, bytes.NewReader(content))
+
+		return err
 	},
 }
 
