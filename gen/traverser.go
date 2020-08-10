@@ -19,6 +19,17 @@ type DeclareErr struct {
 	ErrDisable bool
 }
 
+func (f File) Bindings() []Binding {
+	var params []Binding
+	for _, declare := range f.Declares {
+		//fmt.Printf("%+v\n", declare)
+		params = append(params, Binding{
+			Name: declare.Name,
+		})
+	}
+	return params
+}
+
 func Traverse(n *ast.File) (*File, error) {
 
 	var resp []*DeclareErr

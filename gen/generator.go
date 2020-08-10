@@ -15,7 +15,8 @@ import (
 	"gitlab.com/osaki-lab/errcdgen"
 )
 
-{{range .Params}}func New{{.Name}}(err error) *errcdgen.CodeError {
+{{range .Params}}
+func New{{.Name}}(err error) *errcdgen.CodeError {
 	return {{.Name}}.WithError(err)
 }
 {{end}}

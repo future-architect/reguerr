@@ -62,22 +62,12 @@ var rootCmd = &cobra.Command{
 			return err
 		}
 
-		var params []gen.Binding
-		for _, declare := range traverse.Declares {
-			//fmt.Printf("%+v\n", declare)
-			params = append(params, gen.Binding{
-				Name: declare.Name,
-			})
-		}
-
-		content, err := gen.Generate(traverse.PkgName, params)
+		content, err := gen.Generate(traverse.PkgName, traverse.Bindings())
 		if err != nil {
 			return err
 		}
 
-		outFile := strings.Replace(filename, ".go", "_errcdgen.go", 1)
-
-		out, err := os.Create(outFile)
+		out, err := os.Create(strings.Replace(filename, ".go", "_errcdgen.go", 1))
 		if err != nil {
 			return err
 		}
