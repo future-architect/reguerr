@@ -21,6 +21,13 @@ type Decl struct {
 	StatusCodeEnable bool
 	StatusCode       int
 	DisableErr       bool
+	Labels           []Label
+}
+
+type Label struct {
+	Index  int
+	Name   string
+	GoType string
 }
 
 func (f File) Bindings() []Binding {
