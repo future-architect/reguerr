@@ -39,7 +39,7 @@ func NewCodeError(code, format string) *CodeError {
 	}
 }
 
-func (e *CodeError) Label(name string, goType interface{}) *CodeError {
+func (e *CodeError) Label(index int, name string, goType interface{}) *CodeError {
 	// コード解析用の関数なので、内部的には何もしないしなくて良い
 	return e
 }

@@ -3,6 +3,7 @@ package gen
 import (
 	"bytes"
 	"errors"
+	"gitlab.com/osaki-lab/errcdgen"
 	"go/format"
 	"strings"
 	"text/template"
@@ -18,11 +19,11 @@ import (
 {{range .Params}}
 {{if .DisableErr}}
 func New{{.Name}}() *errcdgen.CodeError {
-	return {{.Name}}{{if .StatusCodeEnable}}.WithStatusCode({{.StatusCode}}){{end}}
+	return {{.Name}}
 }
 {{else}}
 func New{{.Name}}(err error) *errcdgen.CodeError {
-	return {{.Name}}.WithError(err){{if .StatusCodeEnable}}.WithStatusCode({{.StatusCode}}){{end}}
+	return {{.Name}}.WithError(err)
 }
 {{end}}
 {{end}}
@@ -33,6 +34,8 @@ type Binding struct {
 	DisableErr       bool
 	StatusCode       int
 	StatusCodeEnable bool
+	LogLevelEnable   bool
+	LogLevel         errcdgen.Level
 }
 
 func Generate(pkg string, params []Binding) ([]byte, error) {

@@ -14,7 +14,7 @@ var (
 
 	// Message arguments with label
 	InvalidInputParameterErr = errcdgen.NewCodeError("1003", "invalid input parameter: %v").
-		Label("payload", map[string]interface{}{})
+		Label(0,"payload", map[string]interface{}{})
 
 	// Disable default error argument
 	UserTypeUnregisterErr = errcdgen.NewCodeError("1005", "not found user type").DisableError()

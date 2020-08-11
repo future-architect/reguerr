@@ -16,6 +16,7 @@ type Decl struct {
 	Name             string
 	Code             string
 	Format           string
+	LogLevelEnable   bool
 	LogLevel         errcdgen.Level
 	StatusCodeEnable bool
 	StatusCode       int
@@ -28,6 +29,8 @@ func (f File) Bindings() []Binding {
 		resp = append(resp, Binding{
 			Name:             d.Name,
 			DisableErr:       d.DisableErr,
+			LogLevelEnable:   d.LogLevelEnable,
+			LogLevel:         d.LogLevel,
 			StatusCodeEnable: d.StatusCodeEnable,
 			StatusCode:       d.StatusCode,
 		})
@@ -141,11 +144,38 @@ func traverseDeclareBlock(v ast.Expr) *Decl {
 			decl.DisableErr = true
 		}
 
+		if v.Sel.Name == "TraceLevel" {
+			decl.LogLevelEnable = true
+			decl.LogLevel = errcdgen.TraceLevel
+		}
+
+		if v.Sel.Name == "DebugLevel" {
+			decl.LogLevelEnable = true
+			decl.LogLevel = errcdgen.DebugLevel
+		}
+
+		if v.Sel.Name == "InfoLevel" {
+			decl.LogLevelEnable = true
+			decl.LogLevel = errcdgen.InfoLevel
+		}
+
 		if v.Sel.Name == "WarnLevel" {
+			decl.LogLevelEnable = true
 			decl.LogLevel = errcdgen.WarnLevel
 		}
 
+		if v.Sel.Name == "ErrorLevel" {
+			decl.LogLevelEnable = true
+			decl.LogLevel = errcdgen.ErrorLevel
+		}
+
+		if v.Sel.Name == "FatalLevel" {
+			decl.LogLevelEnable = true
+			decl.LogLevel = errcdgen.FatalLevel
+		}
+
 		if v.Sel.Name == "WithStatusCode" {
+			decl.LogLevelEnable = true
 			decl.StatusCodeEnable = true
 		}
 
