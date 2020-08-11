@@ -19,14 +19,15 @@ type Decl struct {
 	LogLevel         errcdgen.Level
 	StatusCodeEnable bool
 	StatusCode       int
-	ErrDisable       bool
+	DisableErr       bool
 }
 
 func (f File) Bindings() []Binding {
 	var resp []Binding
 	for _, d := range f.Decls {
 		resp = append(resp, Binding{
-			Name: d.Name,
+			Name:       d.Name,
+			DisableErr: d.DisableErr,
 		})
 	}
 	return resp
@@ -135,7 +136,7 @@ func traverseDeclareBlock(v ast.Expr) *Decl {
 		}
 
 		if v.Sel.Name == "DisableError" {
-			decl.ErrDisable = true
+			decl.DisableErr = true
 		}
 
 		if v.Sel.Name == "WarnLevel" {
@@ -148,37 +149,6 @@ func traverseDeclareBlock(v ast.Expr) *Decl {
 
 		return decl
 	}
-
-	//if v, ok := v.(*ast.CallExpr); ok {
-	//	if vFun, ok := v.Fun.(*ast.SelectorExpr); ok {
-	//
-	//		vFunX, ok := vFun.X.(*ast.Ident)
-	//		if !ok || vFunX.Name != "errcdgen" {
-	//			return nil
-	//		}
-	//
-	//		if vFun.Sel.Name != "NewCodeError" {
-	//			return nil
-	//		}
-	//
-	//		arg0, ok := v.Args[0].(*ast.BasicLit)
-	//		if !ok {
-	//			return nil
-	//		}
-	//		arg1, ok := v.Args[1].(*ast.BasicLit)
-	//		if !ok {
-	//			return nil
-	//		}
-	//		return &Decl{
-	//			Name:       "",
-	//			Code:       strings.Trim(arg0.Value, `"`),
-	//			Format:     strings.Trim(arg1.Value, `"`),
-	//			LogLevel:   0,
-	//			StatusCode: 0,
-	//			ErrDisable: false,
-	//		}
-	//	}
-	//}
 
 	return nil
 }

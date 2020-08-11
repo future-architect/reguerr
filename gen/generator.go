@@ -16,14 +16,21 @@ import (
 )
 
 {{range .Params}}
+{{ if .DisableErr}}
+func New{{.Name}}() *errcdgen.CodeError {
+	return {{.Name}}
+}
+{{else}}
 func New{{.Name}}(err error) *errcdgen.CodeError {
 	return {{.Name}}.WithError(err)
 }
 {{end}}
+{{end}}
 `
 
 type Binding struct {
-	Name   string
+	Name       string
+	DisableErr bool
 }
 
 func Generate(pkg string, params []Binding) ([]byte, error) {
@@ -32,7 +39,7 @@ func Generate(pkg string, params []Binding) ([]byte, error) {
 	}
 
 	fnMap := template.FuncMap{"title": strings.Title}
-	scansTmpl, err := template.New("juv").Funcs(fnMap).Parse(scansText)
+	scansTmpl, err := template.New("errcdgen").Funcs(fnMap).Parse(scansText)
 	if err != nil {
 		return nil, err
 	}

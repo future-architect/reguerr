@@ -64,7 +64,7 @@ var InvalidInputParameterErr = errcdgen.NewCodeError("1003", "invalid input para
 						LogLevel:         errcdgen.WarnLevel,
 						StatusCode:       404,
 						StatusCodeEnable: true,
-						ErrDisable:       true,
+						DisableErr:       true,
 					},
 				},
 			},
