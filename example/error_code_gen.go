@@ -2,7 +2,6 @@
 package example
 
 import (
-	"errors"
 	"gitlab.com/osaki-lab/errcdgen"
 )
 
@@ -10,26 +9,14 @@ func NewInvalidInputParameterErr(err error, payload map[string]interface{}) *err
 	return InvalidInputParameterErr.WithArgs(payload).WithError(err)
 }
 
-func IsInvalidInputParameterErr(err error) bool {
-	var cerr *errcdgen.CodeError
-	if as := errors.As(err, &cerr); as {
-		if cerr.Code == InvalidInputParameterErr.Code {
-			return true
-		}
-	}
-	return false
-}
-
 func NewNotFoundOperationIDErr(err error) *errcdgen.CodeError {
 	return NotFoundOperationIDErr.WithError(err)
 }
 
-// 指定がないと型が未定義
 func NewUpdateConflictErr(err error, arg1 interface{}) *errcdgen.CodeError {
 	return UpdateConflictErr.WithArgs(arg1)
 }
 
-// errの引数付きで作成
 func NewUserTypeUnregisterErr() *errcdgen.CodeError {
 	return UserTypeUnregisterErr
 }

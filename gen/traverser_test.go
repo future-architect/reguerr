@@ -17,19 +17,19 @@ func TestTraverse(t *testing.T) {
 		{
 			name: "No Options",
 			args: `package example
-
-import (
-	"gitlab.com/osaki-lab/errcdgen"
-)
-
-var (
-	InvalidInputParameterErr = errcdgen.NewCodeError("1003", "invalid input parameter: %v")
-	UpdateConflictErr        = errcdgen.NewCodeError("1004", "other user updated: key=%s")
-)
-`,
+		
+		import (
+			"gitlab.com/osaki-lab/errcdgen"
+		)
+		
+		var (
+			InvalidInputParameterErr = errcdgen.NewCodeError("1003", "invalid input parameter: %v")
+			UpdateConflictErr        = errcdgen.NewCodeError("1004", "other user updated: key=%s")
+		)
+		`,
 			want: &File{
 				PkgName: "example",
-				Declares: []*DeclareErr{
+				Decls: []*Decl{
 					{
 						Name:   "InvalidInputParameterErr",
 						Code:   "1003",
@@ -51,18 +51,20 @@ import (
 	"gitlab.com/osaki-lab/errcdgen"
 )
 
-var InvalidInputParameterErr = errcdgen.NewCodeError("1003", "invalid input parameter: %v").DisableError().WithLevel(errcdgen.WarnLevel).WithStatusCode(404)
+var InvalidInputParameterErr = errcdgen.NewCodeError("1003", "invalid input parameter: %v").
+		DisableError().WarnLevel().WithStatusCode(404)
 `,
 			want: &File{
 				PkgName: "example",
-				Declares: []*DeclareErr{
+				Decls: []*Decl{
 					{
-						Name:       "InvalidInputParameterErr",
-						Code:       "1003",
-						Format:     "invalid input parameter: %v",
-						LogLevel:   errcdgen.WarnLevel,
-						StatusCode: 404,
-						ErrDisable: true,
+						Name:             "InvalidInputParameterErr",
+						Code:             "1003",
+						Format:           "invalid input parameter: %v",
+						LogLevel:         errcdgen.WarnLevel,
+						StatusCode:       404,
+						StatusCodeEnable: true,
+						ErrDisable:       true,
 					},
 				},
 			},
@@ -71,12 +73,12 @@ var InvalidInputParameterErr = errcdgen.NewCodeError("1003", "invalid input para
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			fs := token.NewFileSet()
-			in, err := parser.ParseFile(fs, "example.go", tt.args, 0)
+			f, err := parser.ParseFile(fs, "example.go", tt.args, 0)
 			if err != nil {
 				t.Fatalf("invalid test input: %v", err)
 			}
 
-			got, err := Traverse(in)
+			got, err := Traverse(f)
 			if err != nil {
 				t.Errorf("Traverse() error = %v", err)
 				return

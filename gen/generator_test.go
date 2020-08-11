@@ -16,7 +16,7 @@ func TestGenerate(t *testing.T) {
 			name:    "複数件",
 			args:    File{
 				PkgName:  "example",
-				Declares: []*DeclareErr{
+				Decls: []*Decl{
 					{
 						Name:   "InvalidInputParameterErr",
 						Code:   "1003",

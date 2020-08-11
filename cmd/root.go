@@ -34,21 +34,14 @@ var (
 )
 
 var rootCmd = &cobra.Command{
-	Use:   "コード付きエラー生成",
-	Short: `errcdgenのルールに則った変数から、初期化関数を生成するコマンドです`,
+	Use:   "code generator for error handling with message code",
+	Short: `<TODO>`, // TODO
 	RunE: func(cmd *cobra.Command, args []string) error {
-		fmt.Println("test", file)
-
 		wd, err := os.Getwd()
 		if err != nil {
 			return err
 		}
-		filename := file
-		if !strings.HasSuffix(filename, ".go") {
-			filename = filename + ".go"
-		}
-
-		path := filepath.Join(wd, filename)
+		path := filepath.Join(wd, file)
 
 		f, err := parser.ParseFile(token.NewFileSet(), path, nil, 0)
 		if err != nil {
@@ -67,7 +60,7 @@ var rootCmd = &cobra.Command{
 			return err
 		}
 
-		out, err := os.Create(strings.Replace(filename, ".go", "_errcdgen.go", 1))
+		out, err := os.Create(strings.Replace(file, ".go", "_gen.go", 1))
 		if err != nil {
 			return err
 		}
