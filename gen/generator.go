@@ -16,21 +16,23 @@ import (
 )
 
 {{range .Params}}
-{{ if .DisableErr}}
+{{if .DisableErr}}
 func New{{.Name}}() *errcdgen.CodeError {
-	return {{.Name}}
+	return {{.Name}}{{if .StatusCodeEnable}}.WithStatusCode({{.StatusCode}}){{end}}
 }
 {{else}}
 func New{{.Name}}(err error) *errcdgen.CodeError {
-	return {{.Name}}.WithError(err)
+	return {{.Name}}.WithError(err){{if .StatusCodeEnable}}.WithStatusCode({{.StatusCode}}){{end}}
 }
 {{end}}
 {{end}}
 `
 
 type Binding struct {
-	Name       string
-	DisableErr bool
+	Name             string
+	DisableErr       bool
+	StatusCode       int
+	StatusCodeEnable bool
 }
 
 func Generate(pkg string, params []Binding) ([]byte, error) {

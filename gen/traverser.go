@@ -26,8 +26,10 @@ func (f File) Bindings() []Binding {
 	var resp []Binding
 	for _, d := range f.Decls {
 		resp = append(resp, Binding{
-			Name:       d.Name,
-			DisableErr: d.DisableErr,
+			Name:             d.Name,
+			DisableErr:       d.DisableErr,
+			StatusCodeEnable: d.StatusCodeEnable,
+			StatusCode:       d.StatusCode,
 		})
 	}
 	return resp
