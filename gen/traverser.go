@@ -41,6 +41,8 @@ func (f File) Bindings() []Binding {
 			LogLevel:         d.LogLevel,
 			StatusCodeEnable: d.StatusCodeEnable,
 			StatusCode:       d.StatusCode,
+			LabelEnable:      len(d.Labels) > 0,
+			Labels:           d.Labels,
 		})
 	}
 	return resp

@@ -5,7 +5,6 @@ import (
 	"errors"
 	"gitlab.com/osaki-lab/errcdgen"
 	"go/format"
-	"strings"
 	"text/template"
 )
 
@@ -18,12 +17,12 @@ import (
 
 {{range .Params}}
 {{if .DisableErr}}
-func New{{.Name}}() *errcdgen.CodeError {
-	return {{.Name}}
+func New{{.Name}}({{if .LabelEnable}}{{args .Labels}}{{end}}) *errcdgen.CodeError {
+	return {{.Name}}{{if .LabelEnable}}.Args({{argValues .Labels}}){{end}}
 }
 {{else}}
-func New{{.Name}}(err error) *errcdgen.CodeError {
-	return {{.Name}}.WithError(err)
+func New{{.Name}}(err error{{if .LabelEnable}}, {{args .Labels}}{{end}}) *errcdgen.CodeError {
+	return {{.Name}}.WithError(err){{if .LabelEnable}}.Args({{argValues .Labels}}){{end}}
 }
 {{end}}
 {{end}}
@@ -36,6 +35,8 @@ type Binding struct {
 	StatusCodeEnable bool
 	LogLevelEnable   bool
 	LogLevel         errcdgen.Level
+	LabelEnable      bool
+	Labels           []Label
 }
 
 func Generate(pkg string, params []Binding) ([]byte, error) {
@@ -43,7 +44,7 @@ func Generate(pkg string, params []Binding) ([]byte, error) {
 		return nil, errors.New("no params found")
 	}
 
-	fnMap := template.FuncMap{"title": strings.Title}
+	fnMap := template.FuncMap{"args": Args, "argValues": ArgValues}
 	scansTmpl, err := template.New("errcdgen").Funcs(fnMap).Parse(scansText)
 	if err != nil {
 		return nil, err
@@ -55,4 +56,26 @@ func Generate(pkg string, params []Binding) ([]byte, error) {
 	}
 
 	return format.Source(buff.Bytes())
+}
+
+func Args(labels []Label) string {
+	var resp = ""
+	for _, v := range labels {
+		if resp != "" {
+			resp += ","
+		}
+		resp += v.Name + " " + v.GoType
+	}
+	return resp
+}
+
+func ArgValues(labels []Label) string {
+	var resp = ""
+	for _, v := range labels {
+		if resp != "" {
+			resp += ","
+		}
+		resp += v.Name
+	}
+	return resp
 }

@@ -81,7 +81,13 @@ func NewInvalidInputParameterErr() *errcdgen.CodeError {
 						Name:             "InvalidInputParameterErr",
 						Code:             "1003",
 						Format:           "invalid input parameter: %v",
-						DisableErr:       true,
+						Labels: []Label{
+							{
+								Index:  0,
+								Name:   "payload",
+								GoType: "[]string",
+							},
+						},
 					},
 				},
 			},
@@ -92,13 +98,12 @@ import (
 	"gitlab.com/osaki-lab/errcdgen"
 )
 
-func NewInvalidInputParameterErr() *errcdgen.CodeError {
-	return InvalidInputParameterErr
+func NewInvalidInputParameterErr(err error, payload []string) *errcdgen.CodeError {
+	return InvalidInputParameterErr.WithError(err).Args(payload)
 }
 `,
 			wantErr: false,
 		},
-
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
