@@ -3,6 +3,7 @@ package gen
 import (
 	"gitlab.com/osaki-lab/errcdgen"
 	"go/ast"
+	"log"
 	"strconv"
 	"strings"
 )
@@ -109,6 +110,7 @@ func traverseDeclareBlock(v ast.Expr) *Decl {
 			return nil
 		}
 
+		// status code
 		if decl.StatusCodeEnable && len(v.Args) == 1 {
 			arg0, ok := v.Args[0].(*ast.BasicLit)
 			if !ok {
@@ -118,21 +120,37 @@ func traverseDeclareBlock(v ast.Expr) *Decl {
 			return decl
 		}
 
-		if len(v.Args) < 2 {
-			return decl
+		// Label parse
+		if vFun, ok := v.Fun.(*ast.SelectorExpr); ok {
+			if vFun.Sel.Name == "Label" && len(v.Args) == 3 {
+
+				index, err := strconv.Atoi(v.Args[0].(*ast.BasicLit).Value)
+				if err != nil {
+					log.Println("label parse: ", v, err)
+					return nil
+				}
+				decl.Labels = append(decl.Labels, Label{
+					Index:  index,
+					Name:   strings.Trim(v.Args[1].(*ast.BasicLit).Value, `"`),
+					GoType: DetectGoType(v.Args[2]),
+				})
+			}
 		}
 
-		arg0, ok := v.Args[0].(*ast.BasicLit)
-		if !ok {
-			return decl
-		}
-		arg1, ok := v.Args[1].(*ast.BasicLit)
-		if !ok {
-			return decl
+		if len(v.Args) == 2 {
+			arg0, ok := v.Args[0].(*ast.BasicLit)
+			if !ok {
+				return decl
+			}
+			arg1, ok := v.Args[1].(*ast.BasicLit)
+			if !ok {
+				return decl
+			}
+
+			decl.Code = strings.Trim(arg0.Value, `"`)
+			decl.Format = strings.Trim(arg1.Value, `"`)
 		}
 
-		decl.Code = strings.Trim(arg0.Value, `"`)
-		decl.Format = strings.Trim(arg1.Value, `"`)
 		return decl
 
 	case *ast.SelectorExpr:
@@ -182,7 +200,6 @@ func traverseDeclareBlock(v ast.Expr) *Decl {
 		}
 
 		if v.Sel.Name == "WithStatusCode" {
-			decl.LogLevelEnable = true
 			decl.StatusCodeEnable = true
 		}
 
@@ -190,4 +207,27 @@ func traverseDeclareBlock(v ast.Expr) *Decl {
 	}
 
 	return nil
+}
+
+func DetectGoType(expr ast.Node) string {
+	switch e := expr.(type) {
+	case *ast.BasicLit:
+		if e.Value == "INT" {
+			return "int"
+		} else if e.Value == "STRING" {
+			return "string"
+		} else {
+			return "interface{}"
+		}
+	case *ast.CompositeLit:
+		switch et := e.Type.(type) {
+		case *ast.ArrayType:
+			goType := DetectGoType(et.Elt)
+			return "[]" + goType
+		}
+	case *ast.Ident:
+		return e.Name
+	}
+
+	return "" // unknown
 }

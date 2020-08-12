@@ -62,6 +62,7 @@ var InvalidInputParameterErr = errcdgen.NewCodeError("1003", "invalid input para
 						Code:             "1003",
 						Format:           "invalid input parameter: %v",
 						LogLevel:         errcdgen.WarnLevel,
+						LogLevelEnable:   true,
 						StatusCode:       404,
 						StatusCodeEnable: true,
 						DisableErr:       true,
@@ -72,33 +73,32 @@ var InvalidInputParameterErr = errcdgen.NewCodeError("1003", "invalid input para
 		{
 			name: "Label parse",
 			args: `package example
-
-import (
-	"gitlab.com/osaki-lab/errcdgen"
-)
-
-var InvalidInputParameterErr = errcdgen.NewCodeError("1003", "invalid input parameter: %v").
-		Label(0, "payload", map[string]interface{})
-`,
+		
+		import (
+			"gitlab.com/osaki-lab/errcdgen"
+		)
+		
+		var InvalidInputParameterErr = errcdgen.NewCodeError("1003", "invalid input parameter: %v").
+				Label(0, "payload", []string{})
+		`,
 			want: &File{
 				PkgName: "example",
 				Decls: []*Decl{
 					{
-						Name:             "InvalidInputParameterErr",
-						Code:             "1003",
-						Format:           "invalid input parameter: %v",
-						Labels:           []Label{
+						Name:   "InvalidInputParameterErr",
+						Code:   "1003",
+						Format: "invalid input parameter: %v",
+						Labels: []Label{
 							{
 								Index:  0,
 								Name:   "payload",
-								GoType: "map[string]interface{}",
+								GoType: "[]string",
 							},
 						},
 					},
 				},
 			},
 		},
-
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
