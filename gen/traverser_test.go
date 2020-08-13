@@ -2,6 +2,7 @@ package gen
 
 import (
 	"github.com/google/go-cmp/cmp"
+	"github.com/google/go-cmp/cmp/cmpopts"
 	"gitlab.com/osaki-lab/errcdgen"
 	"go/parser"
 	"go/token"
@@ -15,7 +16,7 @@ func TestTraverse(t *testing.T) {
 		want *File
 	}{
 		{
-			name: "No Options",
+			name: "No_Options",
 			args: `package example
 		
 		import (
@@ -44,7 +45,7 @@ func TestTraverse(t *testing.T) {
 			},
 		},
 		{
-			name: "Method chained define",
+			name: "Method_chained_define",
 			args: `package example
 
 import (
@@ -71,7 +72,7 @@ var InvalidInputParameterErr = errcdgen.NewCodeError("1003", "invalid input para
 			},
 		},
 		{
-			name: "Label parse",
+			name: "Label_parse",
 			args: `package example
 		
 		import (
@@ -99,6 +100,47 @@ var InvalidInputParameterErr = errcdgen.NewCodeError("1003", "invalid input para
 				},
 			},
 		},
+		{
+			name: "Multiple_Label_parse",
+			args: `package example
+		
+		import (
+			"gitlab.com/osaki-lab/errcdgen"
+		)
+		
+		var InvalidInputParameterErr = errcdgen.NewCodeError("1003", "strArg:%v intArg:%v mapArg:%v").
+				Label(0, "strArg", "dummy").
+				Label(1, "intArg", int(199)).
+				Label(2, "mapArg", map[string]interface{}{})
+		`,
+			want: &File{
+				PkgName: "example",
+				Decls: []*Decl{
+					{
+						Name:   "InvalidInputParameterErr",
+						Code:   "1003",
+						Format: "strArg:%v intArg:%v mapArg:%v",
+						Labels: []Label{
+							{
+								Index:  0,
+								Name:   "strArg",
+								GoType: "string",
+							},
+							{
+								Index:  1,
+								Name:   "intArg",
+								GoType: "int",
+							},
+							{
+								Index:  2,
+								Name:   "mapArg",
+								GoType: "map[string]interface{}",
+							},
+						},
+					},
+				},
+			},
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -114,7 +156,7 @@ var InvalidInputParameterErr = errcdgen.NewCodeError("1003", "invalid input para
 				return
 			}
 
-			if diff := cmp.Diff(tt.want, got); diff != "" {
+			if diff := cmp.Diff(tt.want, got, cmpopts.IgnoreUnexported(Decl{})); diff != "" {
 				t.Errorf("Traverse() mismatch (-want +got):\n%s", diff)
 			}
 		})

@@ -1,9 +1,11 @@
 package gen
 
 import (
+	"fmt"
 	"gitlab.com/osaki-lab/errcdgen"
 	"go/ast"
 	"log"
+	"os"
 	"strconv"
 	"strings"
 )
@@ -23,6 +25,7 @@ type Decl struct {
 	StatusCode       int
 	DisableErr       bool
 	Labels           []Label
+	chainFuncName    string // inside fields
 }
 
 type Label struct {
@@ -52,6 +55,10 @@ func Traverse(n *ast.File) (*File, error) {
 
 	var resp []*Decl
 	for _, d := range n.Decls {
+
+		//fs := token.NewFileSet()
+		//ast.Print(fs, d)
+
 		decls, err := traverseAst(d)
 		if err != nil {
 			return nil, err
@@ -81,6 +88,7 @@ func traverseAst(n ast.Node) ([]*Decl, error) {
 			resp = append(resp, decls...)
 		}
 	case *ast.GenDecl:
+		// const is not target block
 		if n.Tok.String() == "var" {
 			for _, spec := range n.Specs {
 				decls, err := traverseAst(spec)
@@ -94,7 +102,7 @@ func traverseAst(n ast.Node) ([]*Decl, error) {
 		}
 	case *ast.ValueSpec:
 		// カンマ区切りで左辺に複数宣言するのには対応しない
-		declare := traverseDeclareBlock(n.Values[0])
+		declare := traverseSingle(n.Values[0])
 		if declare != nil {
 			declare.Name = n.Names[0].Name
 			resp = append(resp, declare)
@@ -104,129 +112,118 @@ func traverseAst(n ast.Node) ([]*Decl, error) {
 	return resp, nil
 }
 
-func traverseDeclareBlock(v ast.Expr) *Decl {
+func traverseSingle(v ast.Expr) *Decl {
 	switch v := v.(type) {
 	case *ast.CallExpr:
-		decl := traverseDeclareBlock(v.Fun)
+		decl := traverseSingle(v.Fun)
 		if decl == nil {
 			return nil
 		}
 
-		// status code
-		if decl.StatusCodeEnable && len(v.Args) == 1 {
+		switch decl.chainFuncName {
+		case "NewCodeError":
+			if len(v.Args) != 2 {
+				fmt.Printf("invalid NewCodeErrorFun Args: %v\n", v.Args)
+				return nil
+			}
+
+			arg0, ok := v.Args[0].(*ast.BasicLit)
+			if !ok {
+				return nil
+			}
+			arg1, ok := v.Args[1].(*ast.BasicLit)
+			if !ok {
+				return nil
+			}
+			return &Decl{
+				Code:   strings.Trim(arg0.Value, `"`),
+				Format: strings.Trim(arg1.Value, `"`),
+			}
+
+		case "Label":
+			if len(v.Args) != 3 {
+				fmt.Fprintf(os.Stderr, "Label is only allowed 3 args: %v", v.Args)
+			}
+
+			index, err := strconv.Atoi(v.Args[0].(*ast.BasicLit).Value)
+			if err != nil {
+				log.Println("label parse: ", v, err)
+				return nil
+			}
+			decl.Labels = append(decl.Labels, Label{
+				Index:  index,
+				Name:   strings.Trim(v.Args[1].(*ast.BasicLit).Value, `"`),
+				GoType: DetectGoType(v.Args[2]),
+			})
+
+		case "DisableError":
+			decl.DisableErr = true
+		case "WithStatusCode":
+			decl.StatusCodeEnable = true
 			arg0, ok := v.Args[0].(*ast.BasicLit)
 			if !ok {
 				return decl
 			}
 			decl.StatusCode, _ = strconv.Atoi(arg0.Value)
-			return decl
-		}
-
-		// Label parse
-		if vFun, ok := v.Fun.(*ast.SelectorExpr); ok {
-			if vFun.Sel.Name == "Label" && len(v.Args) == 3 {
-
-				index, err := strconv.Atoi(v.Args[0].(*ast.BasicLit).Value)
-				if err != nil {
-					log.Println("label parse: ", v, err)
-					return nil
-				}
-				decl.Labels = append(decl.Labels, Label{
-					Index:  index,
-					Name:   strings.Trim(v.Args[1].(*ast.BasicLit).Value, `"`),
-					GoType: DetectGoType(v.Args[2]),
-				})
-			}
-		}
-
-		if len(v.Args) == 2 {
-			arg0, ok := v.Args[0].(*ast.BasicLit)
-			if !ok {
-				return decl
-			}
-			arg1, ok := v.Args[1].(*ast.BasicLit)
-			if !ok {
-				return decl
-			}
-
-			decl.Code = strings.Trim(arg0.Value, `"`)
-			decl.Format = strings.Trim(arg1.Value, `"`)
-		}
-
-		return decl
-
-	case *ast.SelectorExpr:
-		if vi, ok := v.X.(*ast.Ident); ok {
-			if vi.Name == "errcdgen" && v.Sel.Name == "NewCodeError" {
-				return &Decl{} // 空で返す
-			}
-		}
-
-		decl := traverseDeclareBlock(v.X)
-		if decl == nil {
-			return nil
-		}
-
-		if v.Sel.Name == "DisableError" {
-			decl.DisableErr = true
-		}
-
-		if v.Sel.Name == "TraceLevel" {
+		case "TraceLevel":
 			decl.LogLevelEnable = true
 			decl.LogLevel = errcdgen.TraceLevel
-		}
-
-		if v.Sel.Name == "DebugLevel" {
+		case "DebugLevel":
 			decl.LogLevelEnable = true
 			decl.LogLevel = errcdgen.DebugLevel
-		}
-
-		if v.Sel.Name == "InfoLevel" {
+		case "InfoLevel":
 			decl.LogLevelEnable = true
 			decl.LogLevel = errcdgen.InfoLevel
-		}
-
-		if v.Sel.Name == "WarnLevel" {
+		case "WarnLevel":
 			decl.LogLevelEnable = true
 			decl.LogLevel = errcdgen.WarnLevel
-		}
-
-		if v.Sel.Name == "ErrorLevel" {
+		case "ErrorLevel":
 			decl.LogLevelEnable = true
 			decl.LogLevel = errcdgen.ErrorLevel
-		}
-
-		if v.Sel.Name == "FatalLevel" {
+		case "FatalLevel":
 			decl.LogLevelEnable = true
 			decl.LogLevel = errcdgen.FatalLevel
 		}
+		return decl
 
-		if v.Sel.Name == "WithStatusCode" {
-			decl.StatusCodeEnable = true
+	case *ast.SelectorExpr:
+		if x, ok := v.X.(*ast.Ident); ok && x.Name == "errcdgen" && v.Sel.Name == "NewCodeError" {
+			return &Decl{
+				chainFuncName: "NewCodeError",
+			}
 		}
 
+		decl := traverseSingle(v.X)
+		decl.chainFuncName = v.Sel.Name
 		return decl
 	}
-
 	return nil
 }
 
 func DetectGoType(expr ast.Node) string {
 	switch e := expr.(type) {
 	case *ast.BasicLit:
-		if e.Value == "INT" {
+		if e.Kind.String() == "INT" {
 			return "int"
-		} else if e.Value == "STRING" {
+		} else if e.Kind.String() == "STRING" {
 			return "string"
 		} else {
 			return "interface{}"
 		}
+	case *ast.CallExpr:
+		return DetectGoType(e.Fun)
 	case *ast.CompositeLit:
 		switch et := e.Type.(type) {
 		case *ast.ArrayType:
 			goType := DetectGoType(et.Elt)
 			return "[]" + goType
+		case *ast.MapType:
+			keyType := DetectGoType(et.Key)
+			valueType := DetectGoType(et.Value)
+			return "map[" + keyType + "]" + valueType
 		}
+	case *ast.InterfaceType:
+		return "interface{}"
 	case *ast.Ident:
 		return e.Name
 	}
