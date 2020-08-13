@@ -31,6 +31,11 @@ func TestAnalyze(t *testing.T) {
 			arg:  "%s%v%+v",
 			want: []Verb{"%s", "%v", "%+v"},
 		},
+		{
+			name: "example_input",
+			arg:  "other user updated: key=%s",
+			want: []Verb{"%s"},
+		},
 
 	}
 	for _, tt := range tests {

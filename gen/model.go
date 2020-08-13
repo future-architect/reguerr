@@ -29,8 +29,8 @@ type Label struct {
 	GoType string
 }
 
-func (d Decl) LabelEnable() bool {
-	return len(d.Labels) > 0
+func (d Decl) ExistArgs() bool {
+	return len(Analyze(d.Format)) > 0
 }
 
 func (d Decl) Args() string {
@@ -51,7 +51,7 @@ func (d Decl) Args() string {
 			continue
 		}
 
-		resp += "arg"+ strconv.Itoa(argNo) + " interface"
+		resp += "arg"+ strconv.Itoa(argNo) + " interface{}"
 		argNo++
 	}
 

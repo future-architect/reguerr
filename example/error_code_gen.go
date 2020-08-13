@@ -14,7 +14,7 @@ func NewUpdateConflictErr(err error) *errcdgen.CodeError {
 }
 
 func NewInvalidInputParameterErr(err error, payload map[string]interface{}) *errcdgen.CodeError {
-	return InvalidInputParameterErr.WithError(err).Args(payload)
+	return InvalidInputParameterErr.WithError(err).WithArgs(payload)
 }
 
 func NewUserTypeUnregisterErr() *errcdgen.CodeError {

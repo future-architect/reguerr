@@ -3,7 +3,9 @@ package gen
 import (
 	"bytes"
 	"errors"
+	"fmt"
 	"go/format"
+	"os"
 	"text/template"
 )
 
@@ -16,12 +18,12 @@ import (
 
 {{range .Params}}
 {{if .DisableErr}}
-func New{{.Name}}({{if .LabelEnable}}{{.Args}}{{end}}) *errcdgen.CodeError {
-	return {{.Name}}{{if .LabelEnable}}.WithArgs({{.ArgValues}}){{end}}
+func New{{.Name}}({{if .ExistArgs}}{{.Args}}{{end}}) *errcdgen.CodeError {
+	return {{.Name}}{{if .ExistArgs}}.WithArgs({{.ArgValues}}){{end}}
 }
 {{else}}
-func New{{.Name}}(err error{{if .LabelEnable}}, {{.Args}}{{end}}) *errcdgen.CodeError {
-	return {{.Name}}.WithError(err){{if .LabelEnable}}.WithArgs({{.ArgValues}}){{end}}
+func New{{.Name}}(err error{{if .ExistArgs}}, {{.Args}}{{end}}) *errcdgen.CodeError {
+	return {{.Name}}.WithError(err){{if .ExistArgs}}.WithArgs({{.ArgValues}}){{end}}
 }
 {{end}}
 {{end}}
@@ -42,5 +44,11 @@ func Generate(pkg string, params []*Decl) ([]byte, error) {
 		return nil, err
 	}
 
-	return format.Source(buff.Bytes())
+	source, err := format.Source(buff.Bytes())
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "source format: %v\n", err)
+		fmt.Fprintf(os.Stderr, string(buff.Bytes()))
+	}
+
+	return source, nil
 }
