@@ -84,13 +84,11 @@ func NewInvalidInputParameterErr(err error, payload map[string]interface{}) *err
 
 And errcdgen generated markdown table.
 
-+------+--------------------------+----------+------------+-----------------------------+
 | CODE |           NAME           | LOGLEVEL | STATUSCODE |           FORMAT            |
-+------+--------------------------+----------+------------+-----------------------------+
+|------|--------------------------|----------|------------|-----------------------------|
 | 1001 | PermissionDeniedErr      | Error    |        500 | permission denied           |
 | 1002 | UpdateConflictErr        | Error    |        500 | other user updated: key=%s  |
 | 1003 | InvalidInputParameterErr | Error    |        500 | invalid input parameter: %v |
-+------+--------------------------+----------+------------+-----------------------------+
 
 
 If you want to see more examples, you can get [example](./example).
