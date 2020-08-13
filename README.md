@@ -15,7 +15,7 @@ errcdgen - error code generator
 ## Installation
 
 ```sh
-go get -u gitlab.com/osaki-lab/errcdgen
+go get -u gitlab.com/osaki-lab/errcdgen/cmd/errcdgen
 ```
 
 ## Options

@@ -99,7 +99,7 @@ import (
 )
 
 func NewInvalidInputParameterErr(err error, payload []string) *errcdgen.CodeError {
-	return InvalidInputParameterErr.WithError(err).Args(payload)
+	return InvalidInputParameterErr.WithError(err).WithArgs(payload)
 }
 `,
 			wantErr: false,
@@ -136,7 +136,7 @@ import (
 )
 
 func NewInvalidInputParameterErr(err error, strArg1 string, intArg1 int) *errcdgen.CodeError {
-	return InvalidInputParameterErr.WithError(err).Args(strArg1, intArg1)
+	return InvalidInputParameterErr.WithError(err).WithArgs(strArg1, intArg1)
 }
 `,
 			wantErr: false,

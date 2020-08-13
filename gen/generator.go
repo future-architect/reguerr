@@ -17,11 +17,11 @@ import (
 {{range .Params}}
 {{if .DisableErr}}
 func New{{.Name}}({{if .LabelEnable}}{{.Args}}{{end}}) *errcdgen.CodeError {
-	return {{.Name}}{{if .LabelEnable}}.Args({{.ArgValues}}){{end}}
+	return {{.Name}}{{if .LabelEnable}}.WithArgs({{.ArgValues}}){{end}}
 }
 {{else}}
 func New{{.Name}}(err error{{if .LabelEnable}}, {{.Args}}{{end}}) *errcdgen.CodeError {
-	return {{.Name}}.WithError(err){{if .LabelEnable}}.Args({{.ArgValues}}){{end}}
+	return {{.Name}}.WithError(err){{if .LabelEnable}}.WithArgs({{.ArgValues}}){{end}}
 }
 {{end}}
 {{end}}
