@@ -19,6 +19,7 @@ type Decl struct {
 	Name             string
 	Code             string
 	Format           string
+	FormatVerbs         []string // set by fmt analyzer
 	LogLevelEnable   bool
 	LogLevel         errcdgen.Level
 	StatusCodeEnable bool
@@ -135,9 +136,14 @@ func traverseSingle(v ast.Expr) *Decl {
 			if !ok {
 				return nil
 			}
+
+			format := strings.Trim(arg1.Value, `"`)
+			verbs := Analyze(format)
+
 			return &Decl{
 				Code:   strings.Trim(arg0.Value, `"`),
-				Format: strings.Trim(arg1.Value, `"`),
+				Format: format,
+				FormatVerbs: verbs.Verb,
 			}
 
 		case "Label":
