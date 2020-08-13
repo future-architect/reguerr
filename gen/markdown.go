@@ -34,6 +34,8 @@ func GenerateMarkdown(w io.Writer, decls []*Decl) error {
 
 	table := tablewriter.NewWriter(w)
 	table.SetHeader([]string{"Code", "Name", "LogLevel", "StatusCode", "Format"})
+	table.SetBorders(tablewriter.Border{Left: true, Top: false, Right: true, Bottom: false})
+	table.SetCenterSeparator("|")
 	table.AppendBulk(data)
 	table.Render()
 
