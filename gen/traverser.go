@@ -29,27 +29,14 @@ type Decl struct {
 	chainFuncName    string // inside fields
 }
 
+func (d Decl)LabelEnable() bool {
+	return len(d.Labels) > 0
+}
+
 type Label struct {
 	Index  int
 	Name   string
 	GoType string
-}
-
-func (f File) Bindings() []Binding {
-	var resp []Binding
-	for _, d := range f.Decls {
-		resp = append(resp, Binding{
-			Name:             d.Name,
-			DisableErr:       d.DisableErr,
-			LogLevelEnable:   d.LogLevelEnable,
-			LogLevel:         d.LogLevel,
-			StatusCodeEnable: d.StatusCodeEnable,
-			StatusCode:       d.StatusCode,
-			LabelEnable:      len(d.Labels) > 0,
-			Labels:           d.Labels,
-		})
-	}
-	return resp
 }
 
 func Traverse(n *ast.File) (*File, error) {

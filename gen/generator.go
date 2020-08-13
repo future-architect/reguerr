@@ -3,7 +3,6 @@ package gen
 import (
 	"bytes"
 	"errors"
-	"gitlab.com/osaki-lab/errcdgen"
 	"go/format"
 	"text/template"
 )
@@ -28,18 +27,7 @@ func New{{.Name}}(err error{{if .LabelEnable}}, {{args .Labels}}{{end}}) *errcdg
 {{end}}
 `
 
-type Binding struct {
-	Name             string
-	DisableErr       bool
-	StatusCode       int
-	StatusCodeEnable bool
-	LogLevelEnable   bool
-	LogLevel         errcdgen.Level
-	LabelEnable      bool
-	Labels           []Label
-}
-
-func Generate(pkg string, params []Binding) ([]byte, error) {
+func Generate(pkg string, params []*Decl) ([]byte, error) {
 	if len(params) < 1 {
 		return nil, errors.New("no params found")
 	}
