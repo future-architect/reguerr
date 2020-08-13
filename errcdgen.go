@@ -10,6 +10,7 @@ var (
 )
 
 // Level represents error level that developer can handle error depending on each variable
+//go:generate stringer -type=Level
 type Level int
 
 const (
