@@ -67,6 +67,19 @@ var rootCmd = &cobra.Command{
 		defer out.Close()
 
 		_, err = io.Copy(out, bytes.NewReader(content))
+		if err != nil {
+			return err
+		}
+
+		doc, err := os.Create(strings.Replace(file, ".go", "_gen.md", 1))
+		if err != nil {
+			return err
+		}
+		defer doc.Close()
+
+		if err := gen.GenerateMarkdown(out, traverse.Decls); err != nil {
+			return fmt.Errorf("generate markdown: %w", err)
+		}
 
 		return err
 	},
