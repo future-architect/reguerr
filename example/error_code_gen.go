@@ -9,8 +9,8 @@ func NewPermissionDeniedErr(err error) *errcdgen.CodeError {
 	return PermissionDeniedErr.WithError(err)
 }
 
-func NewUpdateConflictErr(err error) *errcdgen.CodeError {
-	return UpdateConflictErr.WithError(err)
+func NewUpdateConflictErr(err error, arg1 interface{}) *errcdgen.CodeError {
+	return UpdateConflictErr.WithError(err).WithArgs(arg1)
 }
 
 func NewInvalidInputParameterErr(err error, payload map[string]interface{}) *errcdgen.CodeError {
