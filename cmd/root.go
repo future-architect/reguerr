@@ -55,9 +55,7 @@ var rootCmd = &cobra.Command{
 			return err
 		}
 
-
-
-		content, err := gen.Generate(traverse.PkgName, traverse.Bindings())
+		content, err := gen.Generate(traverse.PkgName, traverse.Decls)
 		if err != nil {
 			return err
 		}

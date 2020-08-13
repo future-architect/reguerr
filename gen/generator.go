@@ -16,12 +16,12 @@ import (
 
 {{range .Params}}
 {{if .DisableErr}}
-func New{{.Name}}({{if .LabelEnable}}{{args .Labels}}{{end}}) *errcdgen.CodeError {
-	return {{.Name}}{{if .LabelEnable}}.Args({{argValues .Labels}}){{end}}
+func New{{.Name}}({{if .LabelEnable}}{{.Args}}{{end}}) *errcdgen.CodeError {
+	return {{.Name}}{{if .LabelEnable}}.Args({{.ArgValues}}){{end}}
 }
 {{else}}
-func New{{.Name}}(err error{{if .LabelEnable}}, {{args .Labels}}{{end}}) *errcdgen.CodeError {
-	return {{.Name}}.WithError(err){{if .LabelEnable}}.Args({{argValues .Labels}}){{end}}
+func New{{.Name}}(err error{{if .LabelEnable}}, {{.Args}}{{end}}) *errcdgen.CodeError {
+	return {{.Name}}.WithError(err){{if .LabelEnable}}.Args({{.ArgValues}}){{end}}
 }
 {{end}}
 {{end}}
@@ -32,8 +32,7 @@ func Generate(pkg string, params []*Decl) ([]byte, error) {
 		return nil, errors.New("no params found")
 	}
 
-	fnMap := template.FuncMap{"args": Args, "argValues": ArgValues}
-	scansTmpl, err := template.New("errcdgen").Funcs(fnMap).Parse(scansText)
+	scansTmpl, err := template.New("errcdgen").Parse(scansText)
 	if err != nil {
 		return nil, err
 	}
@@ -44,26 +43,4 @@ func Generate(pkg string, params []*Decl) ([]byte, error) {
 	}
 
 	return format.Source(buff.Bytes())
-}
-
-func Args(labels []Label) string {
-	var resp = ""
-	for _, v := range labels {
-		if resp != "" {
-			resp += ","
-		}
-		resp += v.Name + " " + v.GoType
-	}
-	return resp
-}
-
-func ArgValues(labels []Label) string {
-	var resp = ""
-	for _, v := range labels {
-		if resp != "" {
-			resp += ","
-		}
-		resp += v.Name
-	}
-	return resp
 }

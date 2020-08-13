@@ -19,7 +19,7 @@ type Decl struct {
 	Name             string
 	Code             string
 	Format           string
-	FormatVerbs         []string // set by fmt analyzer
+	FormatVerbs      []string // set by fmt analyzer
 	LogLevelEnable   bool
 	LogLevel         errcdgen.Level
 	StatusCodeEnable bool
@@ -29,8 +29,30 @@ type Decl struct {
 	chainFuncName    string // inside fields
 }
 
-func (d Decl)LabelEnable() bool {
+func (d Decl) LabelEnable() bool {
 	return len(d.Labels) > 0
+}
+
+func (d Decl) Args() string {
+	var resp = ""
+	for _, v := range d.Labels {
+		if resp != "" {
+			resp += ","
+		}
+		resp += v.Name + " " + v.GoType
+	}
+	return resp
+}
+
+func (d Decl) ArgValues() string {
+	var resp = ""
+	for _, v := range d.Labels {
+		if resp != "" {
+			resp += ","
+		}
+		resp += v.Name
+	}
+	return resp
 }
 
 type Label struct {
@@ -128,8 +150,8 @@ func traverseSingle(v ast.Expr) *Decl {
 			verbs := Analyze(format)
 
 			return &Decl{
-				Code:   strings.Trim(arg0.Value, `"`),
-				Format: format,
+				Code:        strings.Trim(arg0.Value, `"`),
+				Format:      format,
 				FormatVerbs: verbs.Verb,
 			}
 
