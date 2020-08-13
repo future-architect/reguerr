@@ -3,27 +3,27 @@ package gen
 import (
 	"fmt"
 	"github.com/olekukonko/tablewriter"
+	"gitlab.com/osaki-lab/errcdgen"
 	"io"
+	"strings"
 )
 
 func GenerateMarkdown(w io.Writer, decls []*Decl) error {
 	data := make([][]string, 0, len(decls))
 	for _, v := range decls {
-		logLevel := fmt.Sprint(v.LogLevel)
-		if v.LogLevel == 0 {
-			logLevel = "default"
-		}
 
-		statusCode := fmt.Sprint(v.StatusCode)
+		if v.LogLevel == 0 {
+			v.LogLevel = errcdgen.DefaultErrorLevel
+		}
 		if v.StatusCode == 0 {
-			statusCode = "default"
+			v.StatusCode = errcdgen.DefaultStatusCode
 		}
 
 		data = append(data, []string{
 			v.Code,
 			v.Name,
-			logLevel,
-			statusCode,
+			strings.Replace(fmt.Sprint(v.LogLevel), "Level", "", 1),
+			fmt.Sprint(v.StatusCode),
 			v.Format,
 		})
 	}
