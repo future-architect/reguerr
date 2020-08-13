@@ -77,7 +77,7 @@ var rootCmd = &cobra.Command{
 		}
 		defer doc.Close()
 
-		if err := gen.GenerateMarkdown(out, traverse.Decls); err != nil {
+		if err := gen.GenerateMarkdown(doc, traverse.Decls); err != nil {
 			return fmt.Errorf("generate markdown: %w", err)
 		}
 
