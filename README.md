@@ -43,8 +43,15 @@ import (
 )
 
 var (
-	InternalAPIErr     = errcdgen.NewCodeError("1001", "internal api: %v")
-	UpdateConflictErr  = errcdgen.NewCodeError("1002", "update conlict (key=%s): %v")
+	// No message arguments
+	PermissionDeniedErr = errcdgen.NewCodeError("1001", "permission denied")
+
+	// One message arguments
+	UpdateConflictErr = errcdgen.NewCodeError("1002", "other user updated: key=%s")
+
+	// Message arguments with label
+	InvalidInputParameterErr = errcdgen.NewCodeError("1003", "invalid input parameter: %v").
+		Label(0,"payload", map[string]interface{}{})
 )
 EOF
 
@@ -62,14 +69,29 @@ import (
 	"gitlab.com/osaki-lab/errcdgen"
 )
 
-func NewInternalAPIErr(err error, payload map[string]interface{}) *errcdgen.CodeError {
-	return InvalidInputParameterErr.WithArgs(payload).WithError(err)
+func NewPermissionDeniedErr(err error) *errcdgen.CodeError {
+	return PermissionDeniedErr.WithError(err)
 }
 
-func NewUpdateConflictErr(err error) *errcdgen.CodeError {
-	return NotFoundOperationIDErr.WithError(err)
+func NewUpdateConflictErr(err error, arg1 interface{}) *errcdgen.CodeError {
+	return UpdateConflictErr.WithError(err).WithArgs(arg1)
+}
+
+func NewInvalidInputParameterErr(err error, payload map[string]interface{}) *errcdgen.CodeError {
+	return InvalidInputParameterErr.WithError(err).WithArgs(payload)
 }
 ```
+
+And errcdgen generated markdown table.
+
++------+--------------------------+----------+------------+-----------------------------+
+| CODE |           NAME           | LOGLEVEL | STATUSCODE |           FORMAT            |
++------+--------------------------+----------+------------+-----------------------------+
+| 1001 | PermissionDeniedErr      | Error    |        500 | permission denied           |
+| 1002 | UpdateConflictErr        | Error    |        500 | other user updated: key=%s  |
+| 1003 | InvalidInputParameterErr | Error    |        500 | invalid input parameter: %v |
++------+--------------------------+----------+------------+-----------------------------+
+
 
 If you want to see more examples, you can get [example](./example).
 
