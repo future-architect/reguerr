@@ -10,59 +10,7 @@ import (
 	"strings"
 )
 
-type File struct {
-	PkgName string
-	Decls   []*Decl
-}
-
-type Decl struct {
-	Name             string
-	Code             string
-	Format           string
-	FormatVerbs      []string // set by fmt analyzer
-	LogLevelEnable   bool
-	LogLevel         errcdgen.Level
-	StatusCodeEnable bool
-	StatusCode       int
-	DisableErr       bool
-	Labels           []Label
-	chainFuncName    string // inside fields
-}
-
-func (d Decl) LabelEnable() bool {
-	return len(d.Labels) > 0
-}
-
-func (d Decl) Args() string {
-	var resp = ""
-	for _, v := range d.Labels {
-		if resp != "" {
-			resp += ","
-		}
-		resp += v.Name + " " + v.GoType
-	}
-	return resp
-}
-
-func (d Decl) ArgValues() string {
-	var resp = ""
-	for _, v := range d.Labels {
-		if resp != "" {
-			resp += ","
-		}
-		resp += v.Name
-	}
-	return resp
-}
-
-type Label struct {
-	Index  int
-	Name   string
-	GoType string
-}
-
 func Traverse(n *ast.File) (*File, error) {
-
 	var resp []*Decl
 	for _, d := range n.Decls {
 
@@ -146,13 +94,9 @@ func traverseSingle(v ast.Expr) *Decl {
 				return nil
 			}
 
-			format := strings.Trim(arg1.Value, `"`)
-			verbs := Analyze(format)
-
 			return &Decl{
 				Code:        strings.Trim(arg0.Value, `"`),
-				Format:      format,
-				FormatVerbs: verbs.Verb,
+				Format:      strings.Trim(arg1.Value, `"`),
 			}
 
 		case "Label":

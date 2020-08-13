@@ -9,35 +9,27 @@ func TestAnalyze(t *testing.T) {
 	tests := []struct {
 		name string
 		arg  string
-		want FmtVerbs
+		want []Verb
 	}{
 		{
 			name: "zero_arg",
 			arg:  "invalid request",
-			want: FmtVerbs{
-				Verb: nil,
-			},
+			want: nil,
 		},
 		{
 			name: "one_arg",
 			arg:  "invalid request: %v",
-			want: FmtVerbs{
-				Verb: []string{"%v"},
-			},
+			want: []Verb{"%v"},
 		},
 		{
 			name: "multiple_args",
 			arg:  "invalid request(key=%s): %v",
-			want: FmtVerbs{
-				Verb: []string{"%s", "%v"},
-			},
+			want: []Verb{"%s", "%v"},
 		},
 		{
 			name: "continuous",
 			arg:  "%s%v%+v",
-			want: FmtVerbs{
-				Verb: []string{"%s", "%v", "%+v"},
-			},
+			want: []Verb{"%s", "%v", "%+v"},
 		},
 
 	}

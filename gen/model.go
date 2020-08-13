@@ -1,0 +1,91 @@
+package gen
+
+import (
+	"gitlab.com/osaki-lab/errcdgen"
+	"strconv"
+)
+
+type File struct {
+	PkgName string
+	Decls   []*Decl
+}
+
+type Decl struct {
+	Name             string
+	Code             string
+	Format           string
+	LogLevelEnable   bool
+	LogLevel         errcdgen.Level
+	StatusCodeEnable bool
+	StatusCode       int
+	DisableErr       bool
+	Labels           []Label
+	chainFuncName    string // inside fields
+}
+
+type Label struct {
+	Index  int
+	Name   string
+	GoType string
+}
+
+func (d Decl) LabelEnable() bool {
+	return len(d.Labels) > 0
+}
+
+func (d Decl) Args() string {
+	var resp = ""
+
+	verbs := Analyze(d.Format)
+
+	argNo := 1
+	labelMap := d.labelMap()
+	for i, _ := range verbs {
+		if resp != "" {
+			resp += ","
+		}
+
+		label, ok := labelMap[i]
+		if ok {
+			resp += label.Name + " " + label.GoType
+			continue
+		}
+
+		resp += "arg"+ strconv.Itoa(argNo) + " interface"
+		argNo++
+	}
+
+	return resp
+}
+
+func (d Decl) ArgValues() string {
+	var resp = ""
+
+	verbs := Analyze(d.Format)
+
+	argNo := 1
+	labelMap := d.labelMap()
+	for i, _ := range verbs {
+		if resp != "" {
+			resp += ","
+		}
+
+		label, ok := labelMap[i]
+		if ok {
+			resp += label.Name
+			continue
+		}
+
+		resp += "arg"+ strconv.Itoa(argNo)
+		argNo++
+	}
+	return resp
+}
+
+func (d Decl) labelMap() map[int]Label {
+	m := map[int]Label{}
+	for _, l := range d.Labels {
+		m[l.Index] = l
+	}
+	return m
+}

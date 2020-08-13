@@ -112,7 +112,7 @@ func NewInvalidInputParameterErr(err error, payload []string) *errcdgen.CodeErro
 					{
 						Name:             "InvalidInputParameterErr",
 						Code:             "1003",
-						Format:           "invalid input parameter: %v",
+						Format:           "invalid input parameter: str:%v inv:%v",
 						Labels: []Label{
 							{
 								Index:  0,

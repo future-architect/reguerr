@@ -2,9 +2,7 @@ package gen
 
 import "strings"
 
-type FmtVerbs struct {
-	Verb []string
-}
+type Verb string
 
 var verbs = []string{
 	"%v",
@@ -37,8 +35,8 @@ var verbs = []string{
 	"%p",
 }
 
-func Analyze(format string) FmtVerbs {
-	var containVerbs []string
+func Analyze(format string) []Verb {
+	var containVerbs []Verb
 
 	start := 0
 	for start <= len(format) {
@@ -50,7 +48,7 @@ func Analyze(format string) FmtVerbs {
 		originalStart := start
 		for _, verb := range verbs {
 			if strings.HasPrefix(format[start + indexOf:], verb) {
-				containVerbs = append(containVerbs, verb)
+				containVerbs = append(containVerbs, Verb(verb))
 				start += indexOf + len(verb)
 				break
 			}
@@ -61,7 +59,5 @@ func Analyze(format string) FmtVerbs {
 		}
 	}
 
-	return FmtVerbs{
-		Verb: containVerbs,
-	}
+	return containVerbs
 }
