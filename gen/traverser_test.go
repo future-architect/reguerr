@@ -157,7 +157,7 @@ var InvalidInputParameterErr = errcdgen.NewCodeError("1003", "invalid input para
 			}
 
 
-			if diff := cmp.Diff(tt.want, got, cmpopts.IgnoreUnexported(Decl{}), cmpopts.IgnoreFields(Decl{}, "FormatVerbs")); diff != "" {
+			if diff := cmp.Diff(tt.want, got, cmpopts.IgnoreUnexported(Decl{})); diff != "" {
 				t.Errorf("Traverse() mismatch (-want +got):\n%s", diff)
 			}
 		})

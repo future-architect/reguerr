@@ -33,6 +33,7 @@ func TestGenerate(t *testing.T) {
 package example
 
 import (
+	"errors"
 	"gitlab.com/osaki-lab/errcdgen"
 )
 
@@ -40,8 +41,28 @@ func NewInvalidInputParameterErr(err error) *errcdgen.CodeError {
 	return InvalidInputParameterErr.WithError(err)
 }
 
+func IsInvalidInputParameterErr(err error) bool {
+	var cerr *errcdgen.CodeError
+	if as := errors.As(err, &cerr); as {
+		if cerr.Code == InvalidInputParameterErr.Code {
+			return true
+		}
+	}
+	return false
+}
+
 func NewUpdateConflictErr(err error) *errcdgen.CodeError {
 	return UpdateConflictErr.WithError(err)
+}
+
+func IsUpdateConflictErr(err error) bool {
+	var cerr *errcdgen.CodeError
+	if as := errors.As(err, &cerr); as {
+		if cerr.Code == UpdateConflictErr.Code {
+			return true
+		}
+	}
+	return false
 }
 `,
 			wantErr: false,
@@ -63,11 +84,22 @@ func NewUpdateConflictErr(err error) *errcdgen.CodeError {
 package example
 
 import (
+	"errors"
 	"gitlab.com/osaki-lab/errcdgen"
 )
 
 func NewInvalidInputParameterErr(arg1 interface{}) *errcdgen.CodeError {
 	return InvalidInputParameterErr.WithArgs(arg1)
+}
+
+func IsInvalidInputParameterErr(err error) bool {
+	var cerr *errcdgen.CodeError
+	if as := errors.As(err, &cerr); as {
+		if cerr.Code == InvalidInputParameterErr.Code {
+			return true
+		}
+	}
+	return false
 }
 `,
 			wantErr: false,
@@ -95,11 +127,22 @@ func NewInvalidInputParameterErr(arg1 interface{}) *errcdgen.CodeError {
 package example
 
 import (
+	"errors"
 	"gitlab.com/osaki-lab/errcdgen"
 )
 
 func NewInvalidInputParameterErr(err error, payload []string) *errcdgen.CodeError {
 	return InvalidInputParameterErr.WithError(err).WithArgs(payload)
+}
+
+func IsInvalidInputParameterErr(err error) bool {
+	var cerr *errcdgen.CodeError
+	if as := errors.As(err, &cerr); as {
+		if cerr.Code == InvalidInputParameterErr.Code {
+			return true
+		}
+	}
+	return false
 }
 `,
 			wantErr: false,
@@ -132,11 +175,22 @@ func NewInvalidInputParameterErr(err error, payload []string) *errcdgen.CodeErro
 package example
 
 import (
+	"errors"
 	"gitlab.com/osaki-lab/errcdgen"
 )
 
 func NewInvalidInputParameterErr(err error, strArg1 string, intArg1 int) *errcdgen.CodeError {
 	return InvalidInputParameterErr.WithError(err).WithArgs(strArg1, intArg1)
+}
+
+func IsInvalidInputParameterErr(err error) bool {
+	var cerr *errcdgen.CodeError
+	if as := errors.As(err, &cerr); as {
+		if cerr.Code == InvalidInputParameterErr.Code {
+			return true
+		}
+	}
+	return false
 }
 `,
 			wantErr: false,
@@ -158,11 +212,22 @@ func NewInvalidInputParameterErr(err error, strArg1 string, intArg1 int) *errcdg
 package example
 
 import (
+	"errors"
 	"gitlab.com/osaki-lab/errcdgen"
 )
 
 func NewInvalidInputParameterErr(err error, arg1 interface{}, arg2 interface{}) *errcdgen.CodeError {
 	return InvalidInputParameterErr.WithError(err).WithArgs(arg1, arg2)
+}
+
+func IsInvalidInputParameterErr(err error) bool {
+	var cerr *errcdgen.CodeError
+	if as := errors.As(err, &cerr); as {
+		if cerr.Code == InvalidInputParameterErr.Code {
+			return true
+		}
+	}
+	return false
 }
 `,
 			wantErr: false,

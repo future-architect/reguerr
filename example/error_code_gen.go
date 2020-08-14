@@ -2,6 +2,7 @@
 package example
 
 import (
+	"errors"
 	"gitlab.com/osaki-lab/errcdgen"
 )
 
@@ -9,18 +10,68 @@ func NewPermissionDeniedErr(err error) *errcdgen.CodeError {
 	return PermissionDeniedErr.WithError(err)
 }
 
+func IsPermissionDeniedErr(err error) bool {
+	var cerr *errcdgen.CodeError
+	if as := errors.As(err, &cerr); as {
+		if cerr.Code == PermissionDeniedErr.Code {
+			return true
+		}
+	}
+	return false
+}
+
 func NewUpdateConflictErr(err error, arg1 interface{}) *errcdgen.CodeError {
 	return UpdateConflictErr.WithError(err).WithArgs(arg1)
+}
+
+func IsUpdateConflictErr(err error) bool {
+	var cerr *errcdgen.CodeError
+	if as := errors.As(err, &cerr); as {
+		if cerr.Code == UpdateConflictErr.Code {
+			return true
+		}
+	}
+	return false
 }
 
 func NewInvalidInputParameterErr(err error, payload map[string]interface{}) *errcdgen.CodeError {
 	return InvalidInputParameterErr.WithError(err).WithArgs(payload)
 }
 
+func IsInvalidInputParameterErr(err error) bool {
+	var cerr *errcdgen.CodeError
+	if as := errors.As(err, &cerr); as {
+		if cerr.Code == InvalidInputParameterErr.Code {
+			return true
+		}
+	}
+	return false
+}
+
 func NewUserTypeUnregisterErr() *errcdgen.CodeError {
 	return UserTypeUnregisterErr
 }
 
+func IsUserTypeUnregisterErr(err error) bool {
+	var cerr *errcdgen.CodeError
+	if as := errors.As(err, &cerr); as {
+		if cerr.Code == UserTypeUnregisterErr.Code {
+			return true
+		}
+	}
+	return false
+}
+
 func NewNotFoundOperationIDErr(err error) *errcdgen.CodeError {
 	return NotFoundOperationIDErr.WithError(err)
+}
+
+func IsNotFoundOperationIDErr(err error) bool {
+	var cerr *errcdgen.CodeError
+	if as := errors.As(err, &cerr); as {
+		if cerr.Code == NotFoundOperationIDErr.Code {
+			return true
+		}
+	}
+	return false
 }

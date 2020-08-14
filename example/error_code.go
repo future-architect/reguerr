@@ -5,6 +5,7 @@ import (
 )
 
 // errcdgen targets is below.
+// $GOPATH/gitlab.com/osaki-lab/errcdgen>go run cmd/errcdgen/main.go -f example/error_code.go
 var (
 	// No message arguments
 	PermissionDeniedErr = errcdgen.NewCodeError("1001", "permission denied")
