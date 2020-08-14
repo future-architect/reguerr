@@ -73,16 +73,46 @@ func NewPermissionDeniedErr(err error) *errcdgen.CodeError {
 	return PermissionDeniedErr.WithError(err)
 }
 
+func IsPermissionDeniedErr(err error) bool {
+	var cerr *errcdgen.CodeError
+	if as := errors.As(err, &cerr); as {
+		if cerr.Code == PermissionDeniedErr.Code {
+			return true
+		}
+	}
+	return false
+}
+
 func NewUpdateConflictErr(err error, arg1 interface{}) *errcdgen.CodeError {
 	return UpdateConflictErr.WithError(err).WithArgs(arg1)
+}
+
+func IsUpdateConflictErr(err error) bool {
+	var cerr *errcdgen.CodeError
+	if as := errors.As(err, &cerr); as {
+		if cerr.Code == UpdateConflictErr.Code {
+			return true
+		}
+	}
+	return false
 }
 
 func NewInvalidInputParameterErr(err error, payload map[string]interface{}) *errcdgen.CodeError {
 	return InvalidInputParameterErr.WithError(err).WithArgs(payload)
 }
+
+func IsInvalidInputParameterErr(err error) bool {
+	var cerr *errcdgen.CodeError
+	if as := errors.As(err, &cerr); as {
+		if cerr.Code == InvalidInputParameterErr.Code {
+			return true
+		}
+	}
+	return false
+}
 ```
 
-And errcdgen generated markdown table.
+Then errcdgen also generated markdown table.
 
 | CODE |           NAME           | LOGLEVEL | STATUSCODE |           FORMAT            |
 |------|--------------------------|----------|------------|-----------------------------|
