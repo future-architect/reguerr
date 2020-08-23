@@ -1,7 +1,7 @@
 package gen
 
 import (
-	"gitlab.com/osaki-lab/errcdgen"
+	"gitlab.com/osaki-lab/reguerr"
 	"strconv"
 )
 
@@ -15,7 +15,7 @@ type Decl struct {
 	Code             string
 	Format           string
 	LogLevelEnable   bool
-	LogLevel         errcdgen.Level
+	LogLevel         reguerr.Level
 	StatusCodeEnable bool
 	StatusCode       int
 	DisableErr       bool

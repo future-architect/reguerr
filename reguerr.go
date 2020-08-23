@@ -1,4 +1,4 @@
-package errcdgen
+package reguerr
 
 import (
 	"fmt"

@@ -19,7 +19,7 @@ import (
 	"bytes"
 	"fmt"
 	"github.com/spf13/cobra"
-	"gitlab.com/osaki-lab/errcdgen/gen"
+	"gitlab.com/osaki-lab/reguerr/gen"
 	"go/parser"
 	"go/token"
 	"io"
@@ -29,13 +29,13 @@ import (
 )
 
 var (
-	// チェック対象のファイル
+	// input file path
 	file string
 )
 
 var rootCmd = &cobra.Command{
 	Use:   "code generator for error handling with message code",
-	Short: `<TODO>`, // TODO
+	Short: `code generator for error handling with message code`,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		wd, err := os.Getwd()
 		if err != nil {

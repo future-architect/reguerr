@@ -1,4 +1,4 @@
-module gitlab.com/osaki-lab/errcdgen
+module gitlab.com/osaki-lab/reguerr
 
 go 1.14
 

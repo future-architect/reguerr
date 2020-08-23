@@ -2,7 +2,7 @@ package gen
 
 import (
 	"fmt"
-	"gitlab.com/osaki-lab/errcdgen"
+	"gitlab.com/osaki-lab/reguerr"
 	"go/ast"
 	"log"
 	"os"
@@ -126,27 +126,27 @@ func traverseSingle(v ast.Expr) *Decl {
 			decl.StatusCode, _ = strconv.Atoi(arg0.Value)
 		case "TraceLevel":
 			decl.LogLevelEnable = true
-			decl.LogLevel = errcdgen.TraceLevel
+			decl.LogLevel = reguerr.TraceLevel
 		case "DebugLevel":
 			decl.LogLevelEnable = true
-			decl.LogLevel = errcdgen.DebugLevel
+			decl.LogLevel = reguerr.DebugLevel
 		case "InfoLevel":
 			decl.LogLevelEnable = true
-			decl.LogLevel = errcdgen.InfoLevel
+			decl.LogLevel = reguerr.InfoLevel
 		case "WarnLevel":
 			decl.LogLevelEnable = true
-			decl.LogLevel = errcdgen.WarnLevel
+			decl.LogLevel = reguerr.WarnLevel
 		case "ErrorLevel":
 			decl.LogLevelEnable = true
-			decl.LogLevel = errcdgen.ErrorLevel
+			decl.LogLevel = reguerr.ErrorLevel
 		case "FatalLevel":
 			decl.LogLevelEnable = true
-			decl.LogLevel = errcdgen.FatalLevel
+			decl.LogLevel = reguerr.FatalLevel
 		}
 		return decl
 
 	case *ast.SelectorExpr:
-		if x, ok := v.X.(*ast.Ident); ok && x.Name == "errcdgen" && v.Sel.Name == "NewCodeError" {
+		if x, ok := v.X.(*ast.Ident); ok && x.Name == "reguerr" && v.Sel.Name == "NewCodeError" {
 			return &Decl{
 				chainFuncName: "NewCodeError",
 			}

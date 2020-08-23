@@ -3,7 +3,7 @@ package gen
 import (
 	"fmt"
 	"github.com/olekukonko/tablewriter"
-	"gitlab.com/osaki-lab/errcdgen"
+	"gitlab.com/osaki-lab/reguerr"
 	"io"
 	"strings"
 )
@@ -13,10 +13,10 @@ func GenerateMarkdown(w io.Writer, decls []*Decl) error {
 	for _, v := range decls {
 
 		if v.LogLevel == 0 {
-			v.LogLevel = errcdgen.DefaultErrorLevel
+			v.LogLevel = reguerr.DefaultErrorLevel
 		}
 		if v.StatusCode == 0 {
-			v.StatusCode = errcdgen.DefaultStatusCode
+			v.StatusCode = reguerr.DefaultStatusCode
 		}
 
 		data = append(data, []string{

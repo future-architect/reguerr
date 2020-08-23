@@ -15,7 +15,7 @@ limitations under the License.
 */
 package main
 
-import "gitlab.com/osaki-lab/errcdgen/cmd"
+import "gitlab.com/osaki-lab/reguerr/cmd"
 
 func main() {
 	cmd.Execute()

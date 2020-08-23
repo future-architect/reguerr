@@ -3,7 +3,7 @@ package gen
 import (
 	"github.com/google/go-cmp/cmp"
 	"github.com/google/go-cmp/cmp/cmpopts"
-	"gitlab.com/osaki-lab/errcdgen"
+	"gitlab.com/osaki-lab/reguerr"
 	"go/parser"
 	"go/token"
 	"testing"
@@ -20,12 +20,12 @@ func TestTraverse(t *testing.T) {
 			args: `package example
 		
 		import (
-			"gitlab.com/osaki-lab/errcdgen"
+			"gitlab.com/osaki-lab/reguerr"
 		)
 		
 		var (
-			InvalidInputParameterErr = errcdgen.NewCodeError("1003", "invalid input parameter: %v")
-			UpdateConflictErr        = errcdgen.NewCodeError("1004", "other user updated: key=%s")
+			InvalidInputParameterErr = reguerr.NewCodeError("1003", "invalid input parameter: %v")
+			UpdateConflictErr        = reguerr.NewCodeError("1004", "other user updated: key=%s")
 		)
 		`,
 			want: &File{
@@ -49,10 +49,10 @@ func TestTraverse(t *testing.T) {
 			args: `package example
 
 import (
-	"gitlab.com/osaki-lab/errcdgen"
+	"gitlab.com/osaki-lab/reguerr"
 )
 
-var InvalidInputParameterErr = errcdgen.NewCodeError("1003", "invalid input parameter: %v").
+var InvalidInputParameterErr = reguerr.NewCodeError("1003", "invalid input parameter: %v").
 		DisableError().WarnLevel().WithStatusCode(404)
 `,
 			want: &File{
@@ -62,7 +62,7 @@ var InvalidInputParameterErr = errcdgen.NewCodeError("1003", "invalid input para
 						Name:             "InvalidInputParameterErr",
 						Code:             "1003",
 						Format:           "invalid input parameter: %v",
-						LogLevel:         errcdgen.WarnLevel,
+						LogLevel:         reguerr.WarnLevel,
 						LogLevelEnable:   true,
 						StatusCode:       404,
 						StatusCodeEnable: true,
@@ -76,10 +76,10 @@ var InvalidInputParameterErr = errcdgen.NewCodeError("1003", "invalid input para
 			args: `package example
 		
 		import (
-			"gitlab.com/osaki-lab/errcdgen"
+			"gitlab.com/osaki-lab/reguerr"
 		)
 		
-		var InvalidInputParameterErr = errcdgen.NewCodeError("1003", "invalid input parameter: %v").
+		var InvalidInputParameterErr = reguerr.NewCodeError("1003", "invalid input parameter: %v").
 				Label(0, "payload", []string{})
 		`,
 			want: &File{
@@ -105,10 +105,10 @@ var InvalidInputParameterErr = errcdgen.NewCodeError("1003", "invalid input para
 			args: `package example
 		
 		import (
-			"gitlab.com/osaki-lab/errcdgen"
+			"gitlab.com/osaki-lab/reguerr"
 		)
 		
-		var InvalidInputParameterErr = errcdgen.NewCodeError("1003", "strArg:%v intArg:%v mapArg:%v").
+		var InvalidInputParameterErr = reguerr.NewCodeError("1003", "strArg:%v intArg:%v mapArg:%v").
 				Label(0, "strArg", "dummy").
 				Label(1, "intArg", int(199)).
 				Label(2, "mapArg", map[string]interface{}{})
