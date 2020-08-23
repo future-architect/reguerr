@@ -1,7 +1,9 @@
 package reguerr
 
 import (
+	"errors"
 	"fmt"
+	"strings"
 )
 
 var (
@@ -21,6 +23,29 @@ const (
 	ErrorLevel
 	FatalLevel
 )
+
+func (i Level) Equals(arg Level) bool {
+	return i.String() == arg.String()
+}
+
+func NewLevel(s string) (Level, error) {
+	switch strings.ToLower(s) {
+	case strings.ToLower(TraceLevel.String()):
+		return TraceLevel, nil
+	case strings.ToLower(DebugLevel.String()):
+		return DebugLevel, nil
+	case strings.ToLower(InfoLevel.String()):
+		return InfoLevel, nil
+	case strings.ToLower(WarnLevel.String()):
+		return WarnLevel, nil
+	case strings.ToLower(ErrorLevel.String()):
+		return ErrorLevel, nil
+	case strings.ToLower(FatalLevel.String()):
+		return FatalLevel, nil
+	default:
+		return TraceLevel, errors.New("unknown error level")
+	}
+}
 
 type Error struct {
 	Code       string        // error code that you can define each error for your error handling.

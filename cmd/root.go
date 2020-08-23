@@ -20,6 +20,7 @@ import (
 	"fmt"
 	"github.com/fatih/color"
 	"github.com/spf13/cobra"
+	"gitlab.com/osaki-lab/reguerr"
 	"gitlab.com/osaki-lab/reguerr/gen"
 	"go/parser"
 	"go/token"
@@ -30,8 +31,9 @@ import (
 )
 
 var (
-	// input file path
-	file string
+	file       string
+	errLevel   string
+	statusCode int
 )
 
 var rootCmd = &cobra.Command{
@@ -65,7 +67,19 @@ var generateCmd = &cobra.Command{
 			return fmt.Errorf("input file contains invalid content: %v\n", err)
 		}
 
-		content, err := gen.Generate(traverse.PkgName, traverse.Decls)
+		var opts []gen.Option
+		if errLevel != "" {
+			level, err := reguerr.NewLevel(errLevel + "Level")
+			if err != nil{
+				return err
+			}
+			opts = append(opts, gen.DefaultErrorLevel(level))
+		}
+		if statusCode != -1 {
+			opts = append(opts, gen.DefaultStatusCode(statusCode))
+		}
+
+		content, err := gen.GenerateCode(traverse, opts...)
 		if err != nil {
 			return err
 		}
@@ -87,7 +101,7 @@ var generateCmd = &cobra.Command{
 		}
 		defer doc.Close()
 
-		if err := gen.GenerateMarkdown(doc, traverse.Decls); err != nil {
+		if err := gen.GenerateMarkdown(doc, traverse.Decls, opts...); err != nil {
 			return fmt.Errorf("generate markdown: %w", err)
 		}
 
@@ -138,6 +152,8 @@ func init() {
 	// Options
 	generateCmd.Flags().StringVarP(&file, "file", "f", "", "input go file")
 	_ = generateCmd.MarkFlagRequired("file")
+	generateCmd.Flags().StringVarP(&errLevel, "defaultErrorLevel", "", "", "change default log level(Trace,Debug,Info,Warn,Error,Fatal)")
+	generateCmd.Flags().IntVarP(&statusCode, "defaultStatusCode", "", -1, "change default status code")
 
 	validateCmd.Flags().StringVarP(&file, "file", "f", "", "input go file")
 	_ = validateCmd.MarkFlagRequired("file")

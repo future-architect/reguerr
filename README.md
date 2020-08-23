@@ -33,6 +33,22 @@ Flags:
   -h, --help   help for reguerr
 ```
 
+generate command is main function in reguerr.
+
+```sh
+>reguerr generate -h
+generate reguerr code
+
+Usage:
+  reguerr generate [flags]
+
+Flags:
+      --defaultErrorLevel string   change default log level(Trace,Debug,Info,Warn,Error,Fatal)
+      --defaultStatusCode int      change default status code (default -1)
+  -f, --file string                input go file
+  -h, --help                       help for generate
+```
+
 ## Usage
 
 ```sh

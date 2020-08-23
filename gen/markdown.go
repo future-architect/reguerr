@@ -3,20 +3,23 @@ package gen
 import (
 	"fmt"
 	"github.com/olekukonko/tablewriter"
-	"gitlab.com/osaki-lab/reguerr"
 	"io"
 	"strings"
 )
 
-func GenerateMarkdown(w io.Writer, decls []*Decl) error {
+func GenerateMarkdown(w io.Writer, decls []*Decl, opts ...Option) error {
+	setting := NewSetting()
+	for _, opt := range opts {
+		opt(setting)
+	}
+
 	data := make([][]string, 0, len(decls))
 	for _, v := range decls {
-
 		if v.LogLevel == 0 {
-			v.LogLevel = reguerr.DefaultErrorLevel
+			v.LogLevel = setting.ErrorLevel
 		}
 		if v.StatusCode == 0 {
-			v.StatusCode = reguerr.DefaultStatusCode
+			v.StatusCode = setting.StatusCode
 		}
 
 		data = append(data, []string{
