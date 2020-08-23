@@ -22,11 +22,15 @@ go get -u gitlab.com/osaki-lab/reguerr/cmd/reguerr
 >reguerr -h
 
 Usage:
-  code generator for systematic error handling. [flags]
+  reguerr [command]
+
+Available Commands:
+  generate    generate reguerr code
+  help        Help about any command
+  validate    validate input file
 
 Flags:
-  -f, --file string   input go file
-  -h, --help          help for code
+  -h, --help   help for reguerr
 ```
 
 ## Usage
@@ -55,7 +59,7 @@ var (
 EOF
 
 # START reguerr
-./reguerr example.go
+./reguerr generate -f example.go
 ```
 
 Output is bellow format.
@@ -75,7 +79,7 @@ func NewPermissionDeniedErr(err error) *reguerr.Error {
 func IsPermissionDeniedErr(err error) bool {
 	var cerr *reguerr.Error
 	if as := errors.As(err, &cerr); as {
-		if cerr.Code == PermissionDeniedErr.Code {
+		if cerr.Code() == PermissionDeniedErr.Code() {
 			return true
 		}
 	}
@@ -89,7 +93,7 @@ func NewUpdateConflictErr(err error, arg1 interface{}) *reguerr.Error {
 func IsUpdateConflictErr(err error) bool {
 	var cerr *reguerr.Error
 	if as := errors.As(err, &cerr); as {
-		if cerr.Code == UpdateConflictErr.Code {
+		if cerr.Code() == UpdateConflictErr.Code() {
 			return true
 		}
 	}
@@ -103,7 +107,7 @@ func NewInvalidInputParameterErr(err error, payload map[string]interface{}) *reg
 func IsInvalidInputParameterErr(err error) bool {
 	var cerr *reguerr.Error
 	if as := errors.As(err, &cerr); as {
-		if cerr.Code == InvalidInputParameterErr.Code {
+		if cerr.Code() == InvalidInputParameterErr.Code() {
 			return true
 		}
 	}

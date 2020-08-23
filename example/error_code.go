@@ -5,7 +5,7 @@ import (
 )
 
 // reguerr targets is below.
-// cd $GOPATH/src/gitlab.com/osaki-lab/reguerr && go run cmd/reguerr/main.go -f example/error_code.go
+// cd $GOPATH/src/gitlab.com/osaki-lab/reguerr && go run cmd/reguerr/main.go generate -f example/error_code.go
 var (
 	// No message arguments
 	PermissionDeniedErr = reguerr.New("1001", "permission denied").Build()

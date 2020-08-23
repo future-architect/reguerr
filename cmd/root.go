@@ -35,8 +35,12 @@ var (
 )
 
 var rootCmd = &cobra.Command{
-	Use:           "code generator for error handling with message code",
-	Short:         `code generator for error handling with message code`,
+	Use: "reguerr is code generator for systematic error handling with message code",
+}
+
+var generateCmd = &cobra.Command{
+	Use:           "generate",
+	Short:         "generate reguerr code",
 	SilenceErrors: true,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		wd, err := os.Getwd()
@@ -91,6 +95,36 @@ var rootCmd = &cobra.Command{
 	},
 }
 
+var validateCmd = &cobra.Command{
+	Use:           "validate",
+	Short:         "validate input file",
+	SilenceErrors: true,
+	RunE: func(cmd *cobra.Command, args []string) error {
+		wd, err := os.Getwd()
+		if err != nil {
+			return err
+		}
+		path := filepath.Join(wd, file)
+
+		f, err := parser.ParseFile(token.NewFileSet(), path, nil, 0)
+		if err != nil {
+			fmt.Printf("Failed to parse file: %v\n", err)
+			return nil
+		}
+
+		traverse, err := gen.Traverse(f)
+		if err != nil {
+			return err
+		}
+
+		if err := gen.Validate(traverse.Decls); err != nil {
+			return fmt.Errorf("input file contains invalid content: %v\n", err)
+		}
+
+		return nil
+	},
+}
+
 // Execute adds all child commands to the root command and sets flags appropriately.
 // This is called by main.main(). It only needs to happen once to the rootCmd.
 func Execute() {
@@ -102,6 +136,13 @@ func Execute() {
 
 func init() {
 	// Options
-	rootCmd.Flags().StringVarP(&file, "file", "f", "", "input go file")
-	_ = rootCmd.MarkFlagRequired("file")
+	generateCmd.Flags().StringVarP(&file, "file", "f", "", "input go file")
+	_ = generateCmd.MarkFlagRequired("file")
+
+	validateCmd.Flags().StringVarP(&file, "file", "f", "", "input go file")
+	_ = validateCmd.MarkFlagRequired("file")
+
+	rootCmd.AddCommand(generateCmd)
+	rootCmd.AddCommand(validateCmd)
+
 }
