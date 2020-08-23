@@ -42,14 +42,15 @@ import (
 
 var (
 	// No message arguments
-	PermissionDeniedErr = reguerr.New("1001", "permission denied")
+	PermissionDeniedErr = reguerr.New("1001", "permission denied").Build()
 
 	// One message arguments
-	UpdateConflictErr = reguerr.New("1002", "other user updated: key=%s")
+	UpdateConflictErr = reguerr.New("1002", "other user updated: key=%s").Build()
 
 	// Message arguments with label
 	InvalidInputParameterErr = reguerr.New("1003", "invalid input parameter: %v").
-		Label(0,"payload", map[string]interface{}{})
+		Label(0,"payload", map[string]interface{}{}).
+		Build()
 )
 EOF
 
