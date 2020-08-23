@@ -8,12 +8,12 @@ import (
 func TestCodeError_Error(t *testing.T) {
 	tests := []struct {
 		name string
-		in   CodeError
+		in   Error
 		want string
 	}{
 		{
 			name: "",
-			in: CodeError{
+			in: Error{
 				Code:       "1003",
 				Level:      ErrorLevel,
 				StatusCode: 500,

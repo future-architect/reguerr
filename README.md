@@ -42,13 +42,13 @@ import (
 
 var (
 	// No message arguments
-	PermissionDeniedErr = reguerr.NewCodeError("1001", "permission denied")
+	PermissionDeniedErr = reguerr.New("1001", "permission denied")
 
 	// One message arguments
-	UpdateConflictErr = reguerr.NewCodeError("1002", "other user updated: key=%s")
+	UpdateConflictErr = reguerr.New("1002", "other user updated: key=%s")
 
 	// Message arguments with label
-	InvalidInputParameterErr = reguerr.NewCodeError("1003", "invalid input parameter: %v").
+	InvalidInputParameterErr = reguerr.New("1003", "invalid input parameter: %v").
 		Label(0,"payload", map[string]interface{}{})
 )
 EOF
@@ -67,12 +67,12 @@ import (
 	"gitlab.com/osaki-lab/reguerr"
 )
 
-func NewPermissionDeniedErr(err error) *reguerr.CodeError {
+func NewPermissionDeniedErr(err error) *reguerr.Error {
 	return PermissionDeniedErr.WithError(err)
 }
 
 func IsPermissionDeniedErr(err error) bool {
-	var cerr *reguerr.CodeError
+	var cerr *reguerr.Error
 	if as := errors.As(err, &cerr); as {
 		if cerr.Code == PermissionDeniedErr.Code {
 			return true
@@ -81,12 +81,12 @@ func IsPermissionDeniedErr(err error) bool {
 	return false
 }
 
-func NewUpdateConflictErr(err error, arg1 interface{}) *reguerr.CodeError {
+func NewUpdateConflictErr(err error, arg1 interface{}) *reguerr.Error {
 	return UpdateConflictErr.WithError(err).WithArgs(arg1)
 }
 
 func IsUpdateConflictErr(err error) bool {
-	var cerr *reguerr.CodeError
+	var cerr *reguerr.Error
 	if as := errors.As(err, &cerr); as {
 		if cerr.Code == UpdateConflictErr.Code {
 			return true
@@ -95,12 +95,12 @@ func IsUpdateConflictErr(err error) bool {
 	return false
 }
 
-func NewInvalidInputParameterErr(err error, payload map[string]interface{}) *reguerr.CodeError {
+func NewInvalidInputParameterErr(err error, payload map[string]interface{}) *reguerr.Error {
 	return InvalidInputParameterErr.WithError(err).WithArgs(payload)
 }
 
 func IsInvalidInputParameterErr(err error) bool {
-	var cerr *reguerr.CodeError
+	var cerr *reguerr.Error
 	if as := errors.As(err, &cerr); as {
 		if cerr.Code == InvalidInputParameterErr.Code {
 			return true

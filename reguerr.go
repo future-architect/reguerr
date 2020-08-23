@@ -22,7 +22,7 @@ const (
 	FatalLevel
 )
 
-type CodeError struct {
+type Error struct {
 	Code       string        // error code that you can define each error for your error handling.
 	Level      Level         // error Level. default:error
 	StatusCode int           // set http-status-code or exit-code. default:500
@@ -31,8 +31,8 @@ type CodeError struct {
 	err        error         // wrapped error that you hope
 }
 
-func NewCodeError(code, format string) *CodeError {
-	return &CodeError{
+func New(code, format string) *Error {
+	return &Error{
 		Code:       code,
 		format:     format,
 		Level:      DefaultErrorLevel,
@@ -40,42 +40,42 @@ func NewCodeError(code, format string) *CodeError {
 	}
 }
 
-func (e *CodeError) Label(index int, name string, goType interface{}) *CodeError {
+func (e *Error) Label(index int, name string, goType interface{}) *Error {
 	// コード解析用の関数なので、内部的には何もしないしなくて良い
 	return e
 }
 
-func (e *CodeError) DisableError() *CodeError {
+func (e *Error) DisableError() *Error {
 	// 解析用途なのにで、何もしない
 	return e
 }
 
-func (e *CodeError) TraceLevel() *CodeError {
+func (e *Error) TraceLevel() *Error {
 	return e.withLevel(TraceLevel)
 }
 
-func (e *CodeError) DebugLevel() *CodeError {
+func (e *Error) DebugLevel() *Error {
 	return e.withLevel(DebugLevel)
 }
 
-func (e *CodeError) InfoLevel() *CodeError {
+func (e *Error) InfoLevel() *Error {
 	return e.withLevel(InfoLevel)
 }
 
-func (e *CodeError) WarnLevel() *CodeError {
+func (e *Error) WarnLevel() *Error {
 	return e.withLevel(WarnLevel)
 }
 
-func (e *CodeError) ErrorLevel() *CodeError {
+func (e *Error) ErrorLevel() *Error {
 	return e.withLevel(ErrorLevel)
 }
 
-func (e *CodeError) FatalLevel() *CodeError {
+func (e *Error) FatalLevel() *Error {
 	return e.withLevel(FatalLevel)
 }
 
-func (e *CodeError) withLevel(lvl Level) *CodeError {
-	return &CodeError{
+func (e *Error) withLevel(lvl Level) *Error {
+	return &Error{
 		Code:       e.Code,
 		Level:      lvl,
 		StatusCode: e.StatusCode,
@@ -84,8 +84,8 @@ func (e *CodeError) withLevel(lvl Level) *CodeError {
 	}
 }
 
-func (e *CodeError) WithStatusCode(statusCode int) *CodeError {
-	return &CodeError{
+func (e *Error) WithStatusCode(statusCode int) *Error {
+	return &Error{
 		Code:       e.Code,
 		Level:      e.Level,
 		StatusCode: statusCode,
@@ -95,8 +95,8 @@ func (e *CodeError) WithStatusCode(statusCode int) *CodeError {
 	}
 }
 
-func (e *CodeError) WithArgs(args ...interface{}) *CodeError {
-	return &CodeError{
+func (e *Error) WithArgs(args ...interface{}) *Error {
+	return &Error{
 		Code:       e.Code,
 		Level:      e.Level,
 		StatusCode: e.StatusCode,
@@ -106,8 +106,8 @@ func (e *CodeError) WithArgs(args ...interface{}) *CodeError {
 	}
 }
 
-func (e *CodeError) WithError(err error) *CodeError {
-	return &CodeError{
+func (e *Error) WithError(err error) *Error {
+	return &Error{
 		Code:       e.Code,
 		Level:      e.Level,
 		StatusCode: e.StatusCode,
@@ -117,11 +117,11 @@ func (e *CodeError) WithError(err error) *CodeError {
 	}
 }
 
-func (e *CodeError) Message() string {
+func (e *Error) Message() string {
 	return fmt.Sprintf(e.format, e.args)
 }
 
-func (e *CodeError) Error() string {
+func (e *Error) Error() string {
 	if e.err != nil {
 		return fmt.Sprintf("[%s]%s: %v", e.Code, e.Message(), e.err)
 	}

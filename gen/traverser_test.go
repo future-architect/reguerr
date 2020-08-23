@@ -24,8 +24,8 @@ func TestTraverse(t *testing.T) {
 		)
 		
 		var (
-			InvalidInputParameterErr = reguerr.NewCodeError("1003", "invalid input parameter: %v")
-			UpdateConflictErr        = reguerr.NewCodeError("1004", "other user updated: key=%s")
+			InvalidInputParameterErr = reguerr.New("1003", "invalid input parameter: %v")
+			UpdateConflictErr        = reguerr.New("1004", "other user updated: key=%s")
 		)
 		`,
 			want: &File{
@@ -52,7 +52,7 @@ import (
 	"gitlab.com/osaki-lab/reguerr"
 )
 
-var InvalidInputParameterErr = reguerr.NewCodeError("1003", "invalid input parameter: %v").
+var InvalidInputParameterErr = reguerr.New("1003", "invalid input parameter: %v").
 		DisableError().WarnLevel().WithStatusCode(404)
 `,
 			want: &File{
@@ -79,7 +79,7 @@ var InvalidInputParameterErr = reguerr.NewCodeError("1003", "invalid input param
 			"gitlab.com/osaki-lab/reguerr"
 		)
 		
-		var InvalidInputParameterErr = reguerr.NewCodeError("1003", "invalid input parameter: %v").
+		var InvalidInputParameterErr = reguerr.New("1003", "invalid input parameter: %v").
 				Label(0, "payload", []string{})
 		`,
 			want: &File{
@@ -108,7 +108,7 @@ var InvalidInputParameterErr = reguerr.NewCodeError("1003", "invalid input param
 			"gitlab.com/osaki-lab/reguerr"
 		)
 		
-		var InvalidInputParameterErr = reguerr.NewCodeError("1003", "strArg:%v intArg:%v mapArg:%v").
+		var InvalidInputParameterErr = reguerr.New("1003", "strArg:%v intArg:%v mapArg:%v").
 				Label(0, "strArg", "dummy").
 				Label(1, "intArg", int(199)).
 				Label(2, "mapArg", map[string]interface{}{})

@@ -79,7 +79,7 @@ func traverseSingle(v ast.Expr) *Decl {
 		}
 
 		switch decl.chainFuncName {
-		case "NewCodeError":
+		case "New":
 			if len(v.Args) != 2 {
 				fmt.Printf("invalid NewCodeErrorFun Args: %v\n", v.Args)
 				return nil
@@ -146,9 +146,9 @@ func traverseSingle(v ast.Expr) *Decl {
 		return decl
 
 	case *ast.SelectorExpr:
-		if x, ok := v.X.(*ast.Ident); ok && x.Name == "reguerr" && v.Sel.Name == "NewCodeError" {
+		if x, ok := v.X.(*ast.Ident); ok && x.Name == "reguerr" && v.Sel.Name == "New" {
 			return &Decl{
-				chainFuncName: "NewCodeError",
+				chainFuncName: "New",
 			}
 		}
 

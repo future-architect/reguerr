@@ -37,12 +37,12 @@ import (
 	"gitlab.com/osaki-lab/reguerr"
 )
 
-func NewInvalidInputParameterErr(err error) *reguerr.CodeError {
+func NewInvalidInputParameterErr(err error) *reguerr.Error {
 	return InvalidInputParameterErr.WithError(err)
 }
 
 func IsInvalidInputParameterErr(err error) bool {
-	var cerr *reguerr.CodeError
+	var cerr *reguerr.Error
 	if as := errors.As(err, &cerr); as {
 		if cerr.Code == InvalidInputParameterErr.Code {
 			return true
@@ -51,12 +51,12 @@ func IsInvalidInputParameterErr(err error) bool {
 	return false
 }
 
-func NewUpdateConflictErr(err error) *reguerr.CodeError {
+func NewUpdateConflictErr(err error) *reguerr.Error {
 	return UpdateConflictErr.WithError(err)
 }
 
 func IsUpdateConflictErr(err error) bool {
-	var cerr *reguerr.CodeError
+	var cerr *reguerr.Error
 	if as := errors.As(err, &cerr); as {
 		if cerr.Code == UpdateConflictErr.Code {
 			return true
@@ -88,12 +88,12 @@ import (
 	"gitlab.com/osaki-lab/reguerr"
 )
 
-func NewInvalidInputParameterErr(arg1 interface{}) *reguerr.CodeError {
+func NewInvalidInputParameterErr(arg1 interface{}) *reguerr.Error {
 	return InvalidInputParameterErr.WithArgs(arg1)
 }
 
 func IsInvalidInputParameterErr(err error) bool {
-	var cerr *reguerr.CodeError
+	var cerr *reguerr.Error
 	if as := errors.As(err, &cerr); as {
 		if cerr.Code == InvalidInputParameterErr.Code {
 			return true
@@ -131,12 +131,12 @@ import (
 	"gitlab.com/osaki-lab/reguerr"
 )
 
-func NewInvalidInputParameterErr(err error, payload []string) *reguerr.CodeError {
+func NewInvalidInputParameterErr(err error, payload []string) *reguerr.Error {
 	return InvalidInputParameterErr.WithError(err).WithArgs(payload)
 }
 
 func IsInvalidInputParameterErr(err error) bool {
-	var cerr *reguerr.CodeError
+	var cerr *reguerr.Error
 	if as := errors.As(err, &cerr); as {
 		if cerr.Code == InvalidInputParameterErr.Code {
 			return true
@@ -179,12 +179,12 @@ import (
 	"gitlab.com/osaki-lab/reguerr"
 )
 
-func NewInvalidInputParameterErr(err error, strArg1 string, intArg1 int) *reguerr.CodeError {
+func NewInvalidInputParameterErr(err error, strArg1 string, intArg1 int) *reguerr.Error {
 	return InvalidInputParameterErr.WithError(err).WithArgs(strArg1, intArg1)
 }
 
 func IsInvalidInputParameterErr(err error) bool {
-	var cerr *reguerr.CodeError
+	var cerr *reguerr.Error
 	if as := errors.As(err, &cerr); as {
 		if cerr.Code == InvalidInputParameterErr.Code {
 			return true
@@ -216,12 +216,12 @@ import (
 	"gitlab.com/osaki-lab/reguerr"
 )
 
-func NewInvalidInputParameterErr(err error, arg1 interface{}, arg2 interface{}) *reguerr.CodeError {
+func NewInvalidInputParameterErr(err error, arg1 interface{}, arg2 interface{}) *reguerr.Error {
 	return InvalidInputParameterErr.WithError(err).WithArgs(arg1, arg2)
 }
 
 func IsInvalidInputParameterErr(err error) bool {
-	var cerr *reguerr.CodeError
+	var cerr *reguerr.Error
 	if as := errors.As(err, &cerr); as {
 		if cerr.Code == InvalidInputParameterErr.Code {
 			return true
