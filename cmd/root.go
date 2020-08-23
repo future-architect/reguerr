@@ -1,5 +1,5 @@
 /*
-Copyright © 2020 osaki-lab mano.junki@gmail.com
+Copyright © 2020 reguerr
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@ package cmd
 import (
 	"bytes"
 	"fmt"
+	"github.com/fatih/color"
 	"github.com/spf13/cobra"
 	"gitlab.com/osaki-lab/reguerr/gen"
 	"go/parser"
@@ -34,8 +35,9 @@ var (
 )
 
 var rootCmd = &cobra.Command{
-	Use:   "code generator for error handling with message code",
-	Short: `code generator for error handling with message code`,
+	Use:           "code generator for error handling with message code",
+	Short:         `code generator for error handling with message code`,
+	SilenceErrors: true,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		wd, err := os.Getwd()
 		if err != nil {
@@ -53,6 +55,10 @@ var rootCmd = &cobra.Command{
 		traverse, err := gen.Traverse(f)
 		if err != nil {
 			return err
+		}
+
+		if err := gen.Validate(traverse.Decls); err != nil {
+			return fmt.Errorf("input file contains invalid content: %v\n", err)
 		}
 
 		content, err := gen.Generate(traverse.PkgName, traverse.Decls)
@@ -89,7 +95,7 @@ var rootCmd = &cobra.Command{
 // This is called by main.main(). It only needs to happen once to the rootCmd.
 func Execute() {
 	if err := rootCmd.Execute(); err != nil {
-		fmt.Println(err)
+		color.Red(err.Error())
 		os.Exit(1)
 	}
 }

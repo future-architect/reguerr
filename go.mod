@@ -3,6 +3,7 @@ module gitlab.com/osaki-lab/reguerr
 go 1.14
 
 require (
+	github.com/fatih/color v1.9.0
 	github.com/google/go-cmp v0.3.0
 	github.com/mattn/go-runewidth v0.0.9 // indirect
 	github.com/olekukonko/tablewriter v0.0.4
