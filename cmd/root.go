@@ -20,6 +20,7 @@ import (
 	"fmt"
 	"github.com/fatih/color"
 	"github.com/spf13/cobra"
+	"gitlab.com/osaki-lab/reguerr"
 	"gitlab.com/osaki-lab/reguerr/gen"
 	"go/parser"
 	"go/token"
@@ -30,13 +31,18 @@ import (
 )
 
 var (
-	// input file path
-	file string
+	file       string
+	errLevel   string
+	statusCode int
 )
 
 var rootCmd = &cobra.Command{
-	Use:           "code generator for error handling with message code",
-	Short:         `code generator for error handling with message code`,
+	Use: "reguerr is code generator for systematic error handling with message code",
+}
+
+var generateCmd = &cobra.Command{
+	Use:           "generate",
+	Short:         "generate reguerr code",
 	SilenceErrors: true,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		wd, err := os.Getwd()
@@ -61,7 +67,19 @@ var rootCmd = &cobra.Command{
 			return fmt.Errorf("input file contains invalid content: %v\n", err)
 		}
 
-		content, err := gen.Generate(traverse.PkgName, traverse.Decls)
+		var opts []gen.Option
+		if errLevel != "" {
+			level, err := reguerr.NewLevel(errLevel + "Level")
+			if err != nil{
+				return err
+			}
+			opts = append(opts, gen.DefaultErrorLevel(level))
+		}
+		if statusCode != -1 {
+			opts = append(opts, gen.DefaultStatusCode(statusCode))
+		}
+
+		content, err := gen.GenerateCode(traverse, opts...)
 		if err != nil {
 			return err
 		}
@@ -83,11 +101,41 @@ var rootCmd = &cobra.Command{
 		}
 		defer doc.Close()
 
-		if err := gen.GenerateMarkdown(doc, traverse.Decls); err != nil {
+		if err := gen.GenerateMarkdown(doc, traverse.Decls, opts...); err != nil {
 			return fmt.Errorf("generate markdown: %w", err)
 		}
 
 		return err
+	},
+}
+
+var validateCmd = &cobra.Command{
+	Use:           "validate",
+	Short:         "validate input file",
+	SilenceErrors: true,
+	RunE: func(cmd *cobra.Command, args []string) error {
+		wd, err := os.Getwd()
+		if err != nil {
+			return err
+		}
+		path := filepath.Join(wd, file)
+
+		f, err := parser.ParseFile(token.NewFileSet(), path, nil, 0)
+		if err != nil {
+			fmt.Printf("Failed to parse file: %v\n", err)
+			return nil
+		}
+
+		traverse, err := gen.Traverse(f)
+		if err != nil {
+			return err
+		}
+
+		if err := gen.Validate(traverse.Decls); err != nil {
+			return fmt.Errorf("input file contains invalid content: %v\n", err)
+		}
+
+		return nil
 	},
 }
 
@@ -102,6 +150,15 @@ func Execute() {
 
 func init() {
 	// Options
-	rootCmd.Flags().StringVarP(&file, "file", "f", "", "input go file")
-	_ = rootCmd.MarkFlagRequired("file")
+	generateCmd.Flags().StringVarP(&file, "file", "f", "", "input go file")
+	_ = generateCmd.MarkFlagRequired("file")
+	generateCmd.Flags().StringVarP(&errLevel, "defaultErrorLevel", "", "", "change default log level(Trace,Debug,Info,Warn,Error,Fatal)")
+	generateCmd.Flags().IntVarP(&statusCode, "defaultStatusCode", "", -1, "change default status code")
+
+	validateCmd.Flags().StringVarP(&file, "file", "f", "", "input go file")
+	_ = validateCmd.MarkFlagRequired("file")
+
+	rootCmd.AddCommand(generateCmd)
+	rootCmd.AddCommand(validateCmd)
+
 }

@@ -17,6 +17,17 @@ import (
 	"gitlab.com/osaki-lab/reguerr"
 )
 
+{{if .Setting.EnableInit}}
+func init() {
+	{{if .Setting.IsOverwriteErrorLevel -}}
+	reguerr.DefaultErrorLevel = reguerr.{{.Setting.ErrorLevel}}
+	{{end -}}
+	{{if .Setting.IsOverwriteStatusCode -}}
+	reguerr.DefaultStatusCode = {{.Setting.StatusCode}}
+	{{end -}}
+}
+{{end}}
+
 {{range .Params}}
 {{if .DisableErr}}
 func New{{.Name}}({{if .ExistArgs}}{{.Args}}{{end}}) *reguerr.Error {
@@ -40,7 +51,15 @@ func Is{{.Name}}(err error) bool {
 {{end}}
 `
 
-func Generate(pkg string, params []*Decl) ([]byte, error) {
+func GenerateCode(f *File, opts ...Option) ([]byte, error) {
+	pkg := f.PkgName
+	params := f.Decls
+
+	setting := NewSetting()
+	for _, opt := range opts {
+		opt(setting)
+	}
+
 	if len(params) < 1 {
 		return nil, errors.New("no params found")
 	}
@@ -51,7 +70,7 @@ func Generate(pkg string, params []*Decl) ([]byte, error) {
 	}
 
 	buff := new(bytes.Buffer)
-	if err := scansTmpl.Execute(buff, map[string]interface{}{"Package": pkg, "Params": params}); err != nil {
+	if err := scansTmpl.Execute(buff, map[string]interface{}{"Package": pkg, "Params": params, "Setting": setting}); err != nil {
 		return nil, err
 	}
 
