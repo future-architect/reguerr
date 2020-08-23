@@ -2,15 +2,13 @@
 
 reguerr - Code generator for systematic error handling
 
-## Motivation
+## Abstract
 
-業務用システムにおいて、何か不具合が発生した場合に問題切り分けをスムーズにするため、エラーコードを付与することが求められます。
+reguerr helps with systematic error handling.
 
-一方でGoにはerrorという仕組みがあり、コレを用いて異常な状態を上位に伝播させる仕組みを持ちますが、これと上記のエラーコードをつなげる良い仕組みを、見つけることができませんでした。
+In order to facilitate the handling of system failure, you can set the error code to identify the error in reguerr
+and the log level and response code associated with it.
 
-このツールを用いると、一貫的なエラーコード付きの error を生成することができます。
-
-また、ログレベルやレスポンスコードも個別設定できるため、エラーハンドリングの箇所（ログ出力やメトリクス通知）に活かす事もできます。
 
 ## Installation
 
