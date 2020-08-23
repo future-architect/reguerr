@@ -23,9 +23,9 @@ const (
 )
 
 type Error struct {
-	Code       string        // error code that you can define each error for your error handling.
-	Level      Level         // error Level. default:error
-	StatusCode int           // set http-status-code or exit-code. default:500
+	code       string        // error code that you can define each error for your error handling.
+	level      Level         // error Level. default:error
+	statusCode int           // set http-status-code or exit-code. default:500
 	format     string        // error message template. You can user fmt package placeholder style
 	args       []interface{} // message argument
 	err        error         // wrapped error that you hope
@@ -33,9 +33,9 @@ type Error struct {
 
 func (e *Error) WithArgs(args ...interface{}) *Error {
 	return &Error{
-		Code:       e.Code,
-		Level:      e.Level,
-		StatusCode: e.StatusCode,
+		code:       e.code,
+		level:      e.level,
+		statusCode: e.statusCode,
 		format:     e.format,
 		args:       args,
 		err:        e.err,
@@ -44,13 +44,21 @@ func (e *Error) WithArgs(args ...interface{}) *Error {
 
 func (e *Error) WithError(err error) *Error {
 	return &Error{
-		Code:       e.Code,
-		Level:      e.Level,
-		StatusCode: e.StatusCode,
+		code:       e.code,
+		level:      e.level,
+		statusCode: e.statusCode,
 		format:     e.format,
 		args:       e.args,
 		err:        err,
 	}
+}
+
+func (e *Error) Code() string {
+	return e.code
+}
+
+func (e *Error) StatusCode() int {
+	return e.statusCode
 }
 
 func (e *Error) Message() string {
@@ -59,39 +67,39 @@ func (e *Error) Message() string {
 
 func (e *Error) Error() string {
 	if e.err != nil {
-		return fmt.Sprintf("[%s]%s: %v", e.Code, e.Message(), e.err)
+		return fmt.Sprintf("[%s]%s: %v", e.code, e.Message(), e.err)
 	}
-	return fmt.Sprintf("[%s]%s", e.Code, e.Message())
+	return fmt.Sprintf("[%s]%s", e.code, e.Message())
 }
 func (e *Error) IsTraceLevel() bool {
-	return e.Level == TraceLevel
+	return e.level == TraceLevel
 }
 
 func (e *Error) IsDebugLevel() bool {
-	return e.Level == DebugLevel
+	return e.level == DebugLevel
 }
 
 func (e *Error) IsInfoLevel() bool {
-	return e.Level == InfoLevel
+	return e.level == InfoLevel
 }
 
 func (e *Error) IsWarnLevel() bool {
-	return e.Level == WarnLevel
+	return e.level == WarnLevel
 }
 
 func (e *Error) IsErrorLevel() bool {
-	return e.Level == ErrorLevel
+	return e.level == ErrorLevel
 }
 
 func (e *Error) IsFatalLevel() bool {
-	return e.Level == FatalLevel
+	return e.level == FatalLevel
 }
 
 func (e *Error) withLevel(lvl Level) *Error {
 	return &Error{
-		Code:       e.Code,
-		Level:      lvl,
-		StatusCode: e.StatusCode,
+		code:       e.code,
+		level:      lvl,
+		statusCode: e.statusCode,
 		format:     e.format,
 		err:        e.err,
 	}

@@ -13,7 +13,7 @@ func NewPermissionDeniedErr(err error) *reguerr.Error {
 func IsPermissionDeniedErr(err error) bool {
 	var cerr *reguerr.Error
 	if as := errors.As(err, &cerr); as {
-		if cerr.Code == PermissionDeniedErr.Code {
+		if cerr.Code() == PermissionDeniedErr.Code() {
 			return true
 		}
 	}
@@ -27,7 +27,7 @@ func NewUpdateConflictErr(err error, arg1 interface{}) *reguerr.Error {
 func IsUpdateConflictErr(err error) bool {
 	var cerr *reguerr.Error
 	if as := errors.As(err, &cerr); as {
-		if cerr.Code == UpdateConflictErr.Code {
+		if cerr.Code() == UpdateConflictErr.Code() {
 			return true
 		}
 	}
@@ -41,7 +41,7 @@ func NewInvalidInputParameterErr(err error, payload map[string]interface{}) *reg
 func IsInvalidInputParameterErr(err error) bool {
 	var cerr *reguerr.Error
 	if as := errors.As(err, &cerr); as {
-		if cerr.Code == InvalidInputParameterErr.Code {
+		if cerr.Code() == InvalidInputParameterErr.Code() {
 			return true
 		}
 	}
@@ -55,7 +55,7 @@ func NewUserTypeUnregisterErr() *reguerr.Error {
 func IsUserTypeUnregisterErr(err error) bool {
 	var cerr *reguerr.Error
 	if as := errors.As(err, &cerr); as {
-		if cerr.Code == UserTypeUnregisterErr.Code {
+		if cerr.Code() == UserTypeUnregisterErr.Code() {
 			return true
 		}
 	}
@@ -69,7 +69,7 @@ func NewNotFoundOperationIDErr(err error) *reguerr.Error {
 func IsNotFoundOperationIDErr(err error) bool {
 	var cerr *reguerr.Error
 	if as := errors.As(err, &cerr); as {
-		if cerr.Code == NotFoundOperationIDErr.Code {
+		if cerr.Code() == NotFoundOperationIDErr.Code() {
 			return true
 		}
 	}

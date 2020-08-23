@@ -7,10 +7,10 @@ type Builder struct {
 func New(code, format string) *Builder {
 	return &Builder{
 		err: &Error{
-			Code:       code,
+			code:       code,
 			format:     format,
-			Level:      DefaultErrorLevel,
-			StatusCode: DefaultStatusCode,
+			level:      DefaultErrorLevel,
+			statusCode: DefaultStatusCode,
 		},
 	}
 }
@@ -64,9 +64,9 @@ func (b *Builder) FatalLevel() *Builder {
 func (b *Builder) WithStatusCode(statusCode int) *Builder {
 	return &Builder{
 		err: &Error{
-			Code:       b.err.Code,
-			Level:      b.err.Level,
-			StatusCode: statusCode,
+			code:       b.err.code,
+			level:      b.err.level,
+			statusCode: statusCode,
 			format:     b.err.format,
 			err:        b.err.err,
 			args:       b.err.args,

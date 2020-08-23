@@ -14,9 +14,9 @@ func TestCodeError_Error(t *testing.T) {
 		{
 			name: "",
 			in: Error{
-				Code:       "1003",
-				Level:      ErrorLevel,
-				StatusCode: 500,
+				code:       "1003",
+				level:      ErrorLevel,
+				statusCode: 500,
 				format:     "invalid input parameter: %v",
 				args:       []interface{}{`{"key":"hoge"}`},
 				err:        errors.New("internal error"),

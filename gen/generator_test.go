@@ -44,7 +44,7 @@ func NewInvalidInputParameterErr(err error) *reguerr.Error {
 func IsInvalidInputParameterErr(err error) bool {
 	var cerr *reguerr.Error
 	if as := errors.As(err, &cerr); as {
-		if cerr.Code == InvalidInputParameterErr.Code {
+		if cerr.Code() == InvalidInputParameterErr.Code() {
 			return true
 		}
 	}
@@ -58,7 +58,7 @@ func NewUpdateConflictErr(err error) *reguerr.Error {
 func IsUpdateConflictErr(err error) bool {
 	var cerr *reguerr.Error
 	if as := errors.As(err, &cerr); as {
-		if cerr.Code == UpdateConflictErr.Code {
+		if cerr.Code() == UpdateConflictErr.Code() {
 			return true
 		}
 	}
@@ -95,7 +95,7 @@ func NewInvalidInputParameterErr(arg1 interface{}) *reguerr.Error {
 func IsInvalidInputParameterErr(err error) bool {
 	var cerr *reguerr.Error
 	if as := errors.As(err, &cerr); as {
-		if cerr.Code == InvalidInputParameterErr.Code {
+		if cerr.Code() == InvalidInputParameterErr.Code() {
 			return true
 		}
 	}
@@ -138,7 +138,7 @@ func NewInvalidInputParameterErr(err error, payload []string) *reguerr.Error {
 func IsInvalidInputParameterErr(err error) bool {
 	var cerr *reguerr.Error
 	if as := errors.As(err, &cerr); as {
-		if cerr.Code == InvalidInputParameterErr.Code {
+		if cerr.Code() == InvalidInputParameterErr.Code() {
 			return true
 		}
 	}
@@ -186,7 +186,7 @@ func NewInvalidInputParameterErr(err error, strArg1 string, intArg1 int) *reguer
 func IsInvalidInputParameterErr(err error) bool {
 	var cerr *reguerr.Error
 	if as := errors.As(err, &cerr); as {
-		if cerr.Code == InvalidInputParameterErr.Code {
+		if cerr.Code() == InvalidInputParameterErr.Code() {
 			return true
 		}
 	}
@@ -223,7 +223,7 @@ func NewInvalidInputParameterErr(err error, arg1 interface{}, arg2 interface{}) 
 func IsInvalidInputParameterErr(err error) bool {
 	var cerr *reguerr.Error
 	if as := errors.As(err, &cerr); as {
-		if cerr.Code == InvalidInputParameterErr.Code {
+		if cerr.Code() == InvalidInputParameterErr.Code() {
 			return true
 		}
 	}

@@ -31,7 +31,7 @@ func New{{.Name}}(err error{{if .ExistArgs}}, {{.Args}}{{end}}) *reguerr.Error {
 func Is{{.Name}}(err error) bool {
 	var cerr *reguerr.Error
 	if as := errors.As(err, &cerr); as {
-		if cerr.Code == {{.Name}}.Code {
+		if cerr.Code() == {{.Name}}.Code() {
 			return true
 		}
 	}
