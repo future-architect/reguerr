@@ -84,6 +84,30 @@ func (e *Error) withLevel(lvl Level) *Error {
 	}
 }
 
+func (e *Error) IsTraceLevel() bool {
+	return e.Level == TraceLevel
+}
+
+func (e *Error) IsDebugLevel() bool {
+	return e.Level == DebugLevel
+}
+
+func (e *Error) IsInfoLevel() bool {
+	return e.Level == InfoLevel
+}
+
+func (e *Error) IsWarnLevel() bool {
+	return e.Level == WarnLevel
+}
+
+func (e *Error) IsErrorLevel() bool {
+	return e.Level == ErrorLevel
+}
+
+func (e *Error) IsFatalLevel() bool {
+	return e.Level == FatalLevel
+}
+
 func (e *Error) WithStatusCode(statusCode int) *Error {
 	return &Error{
 		Code:       e.Code,
