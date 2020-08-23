@@ -21,6 +21,7 @@ type Decl struct {
 	DisableErr       bool
 	Labels           []Label
 	chainFuncName    string // inside fields
+	CallBuild        bool
 }
 
 type Label struct {
@@ -51,7 +52,7 @@ func (d Decl) Args() string {
 			continue
 		}
 
-		resp += "arg"+ strconv.Itoa(argNo) + " interface{}"
+		resp += "arg" + strconv.Itoa(argNo) + " interface{}"
 		argNo++
 	}
 
@@ -76,7 +77,7 @@ func (d Decl) ArgValues() string {
 			continue
 		}
 
-		resp += "arg"+ strconv.Itoa(argNo)
+		resp += "arg" + strconv.Itoa(argNo)
 		argNo++
 	}
 	return resp
