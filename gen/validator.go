@@ -10,6 +10,12 @@ func Validate(decls []*Decl) error {
 			return fmt.Errorf("duplicated message code: %v", decl.Code)
 		}
 		unique[decl.Code] = struct{}{}
+
+		// call Build() check. reguerr DSL must call Build() function.
+		if !decl.CallBuild {
+			return fmt.Errorf("reguerr DSL requires Build() function call at the end: ^%s", decl.Name)
+		}
 	}
+
 	return nil
 }

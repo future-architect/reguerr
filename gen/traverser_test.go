@@ -24,22 +24,24 @@ func TestTraverse(t *testing.T) {
 		)
 		
 		var (
-			InvalidInputParameterErr = reguerr.New("1003", "invalid input parameter: %v")
-			UpdateConflictErr        = reguerr.New("1004", "other user updated: key=%s")
+			InvalidInputParameterErr = reguerr.New("1003", "invalid input parameter: %v").Build()
+			UpdateConflictErr        = reguerr.New("1004", "other user updated: key=%s").Build()
 		)
 		`,
 			want: &File{
 				PkgName: "example",
 				Decls: []*Decl{
 					{
-						Name:   "InvalidInputParameterErr",
-						Code:   "1003",
-						Format: "invalid input parameter: %v",
+						Name:      "InvalidInputParameterErr",
+						Code:      "1003",
+						Format:    "invalid input parameter: %v",
+						CallBuild: true,
 					},
 					{
-						Name:   "UpdateConflictErr",
-						Code:   "1004",
-						Format: "other user updated: key=%s",
+						Name:      "UpdateConflictErr",
+						Code:      "1004",
+						Format:    "other user updated: key=%s",
+						CallBuild: true,
 					},
 				},
 			},
@@ -53,7 +55,7 @@ import (
 )
 
 var InvalidInputParameterErr = reguerr.New("1003", "invalid input parameter: %v").
-		DisableError().WarnLevel().WithStatusCode(404)
+		DisableError().WarnLevel().WithStatusCode(404).Build()
 `,
 			want: &File{
 				PkgName: "example",
@@ -67,6 +69,7 @@ var InvalidInputParameterErr = reguerr.New("1003", "invalid input parameter: %v"
 						StatusCode:       404,
 						StatusCodeEnable: true,
 						DisableErr:       true,
+						CallBuild:        true,
 					},
 				},
 			},
@@ -80,7 +83,7 @@ var InvalidInputParameterErr = reguerr.New("1003", "invalid input parameter: %v"
 		)
 		
 		var InvalidInputParameterErr = reguerr.New("1003", "invalid input parameter: %v").
-				Label(0, "payload", []string{})
+				Label(0, "payload", []string{}).Build()
 		`,
 			want: &File{
 				PkgName: "example",
@@ -96,6 +99,7 @@ var InvalidInputParameterErr = reguerr.New("1003", "invalid input parameter: %v"
 								GoType: "[]string",
 							},
 						},
+						CallBuild: true,
 					},
 				},
 			},
@@ -111,7 +115,8 @@ var InvalidInputParameterErr = reguerr.New("1003", "invalid input parameter: %v"
 		var InvalidInputParameterErr = reguerr.New("1003", "strArg:%v intArg:%v mapArg:%v").
 				Label(0, "strArg", "dummy").
 				Label(1, "intArg", int(199)).
-				Label(2, "mapArg", map[string]interface{}{})
+				Label(2, "mapArg", map[string]interface{}{}).
+				Build()
 		`,
 			want: &File{
 				PkgName: "example",
@@ -137,6 +142,29 @@ var InvalidInputParameterErr = reguerr.New("1003", "invalid input parameter: %v"
 								GoType: "map[string]interface{}",
 							},
 						},
+						CallBuild: true,
+					},
+				},
+			},
+		},
+		{
+			name: "no_build_func_call",
+			args: `package example
+		
+		import (
+			"gitlab.com/osaki-lab/reguerr"
+		)
+		
+		var InvalidInputParameterErr = reguerr.New("1003", "invalid input param")
+		`,
+			want: &File{
+				PkgName: "example",
+				Decls: []*Decl{
+					{
+						Name:      "InvalidInputParameterErr",
+						Code:      "1003",
+						Format:    "invalid input param",
+						CallBuild: false,
 					},
 				},
 			},
@@ -155,7 +183,6 @@ var InvalidInputParameterErr = reguerr.New("1003", "invalid input parameter: %v"
 				t.Errorf("Traverse() error = %v", err)
 				return
 			}
-
 
 			if diff := cmp.Diff(tt.want, got, cmpopts.IgnoreUnexported(Decl{})); diff != "" {
 				t.Errorf("Traverse() mismatch (-want +got):\n%s", diff)

@@ -24,6 +24,7 @@ func TestValidate(t *testing.T) {
 					Name:   "InvalidInputParameterErr",
 					Code:   "1003",
 					Format: "invalid input parameter",
+					CallBuild: true,
 				},
 			},
 			wantErr: false,
@@ -35,11 +36,13 @@ func TestValidate(t *testing.T) {
 					Name:   "InvalidInputParameterErr",
 					Code:   "1003",
 					Format: "invalid input parameter",
+					CallBuild: true,
 				},
 				{
 					Name:   "UpdateConflictErr",
 					Code:   "1004",
 					Format: "other user updated",
+					CallBuild: true,
 				},
 			},
 			wantErr: false,
@@ -51,11 +54,13 @@ func TestValidate(t *testing.T) {
 					Name:   "InvalidInputParameterErr",
 					Code:   "1003",
 					Format: "invalid input parameter",
+					CallBuild: true,
 				},
 				{
 					Name:   "UpdateConflictErr",
 					Code:   "1003", // duplicated
 					Format: "other user updated",
+					CallBuild: true,
 				},
 			},
 			wantErr: true,
@@ -68,21 +73,38 @@ func TestValidate(t *testing.T) {
 					Name:   "InvalidInputParameterErr",
 					Code:   "1003",
 					Format: "invalid input parameter",
+					CallBuild: true,
 				},
 				{
 					Name:   "UpdateConflictErr",
 					Code:   "1004",
 					Format: "other user updated",
+					CallBuild: true,
 				},
 				{
 					Name:   "XxxErr",
 					Code:   "1003",
 					Format: "test",
+					CallBuild: true,
 				},
 			},
 			wantErr: true,
 			err:     errors.New("duplicated message code: 1003"),
 		},
+		{
+			name: "callbuild_is_false",
+			args: []*Decl{
+				{
+					Name:   "InvalidInputParameterErr",
+					Code:   "1003",
+					Format: "invalid input parameter",
+					CallBuild: false,
+				},
+			},
+			wantErr: true,
+			err:     errors.New("reguerr DSL requires Build() function call at the end: ^InvalidInputParameterErr"),
+		},
+
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {

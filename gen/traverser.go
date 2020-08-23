@@ -142,6 +142,8 @@ func traverseSingle(v ast.Expr) *Decl {
 		case "FatalLevel":
 			decl.LogLevelEnable = true
 			decl.LogLevel = reguerr.FatalLevel
+		case "Build":
+			decl.CallBuild = true
 		}
 		return decl
 
