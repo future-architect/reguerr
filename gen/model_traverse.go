@@ -1,6 +1,7 @@
 package gen
 
 import (
+	"fmt"
 	"gitlab.com/osaki-lab/reguerr"
 	"strconv"
 )
@@ -89,4 +90,12 @@ func (d Decl) labelMap() map[int]Label {
 		m[l.Index] = l
 	}
 	return m
+}
+
+func (d Decl) MessageTemplate() string {
+	if d.DisableErr {
+		return fmt.Sprintf("[%s] %s", d.Code, d.Format)
+	}
+	return fmt.Sprintf("[%s] %s: $err", d.Code, d.Format)
+
 }
