@@ -134,9 +134,9 @@ func (e *ReguError) Level() Level {
 
 func (e *ReguError) Error() string {
 	if e.err != nil {
-		return fmt.Sprintf("[%s]%s: %v", e.code, e.message(), e.err)
+		return fmt.Sprintf("[%s] %s: %v", e.code, e.message(), e.err)
 	}
-	return fmt.Sprintf("code[%s]%s", e.code, e.message())
+	return fmt.Sprintf("[%s] %s", e.code, e.message())
 }
 
 func (e *ReguError) message() string {

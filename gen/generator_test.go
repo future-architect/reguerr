@@ -44,6 +44,7 @@ import (
 	"gitlab.com/osaki-lab/reguerr"
 )
 
+// [1003] invalid input parameter: $err
 func NewInvalidInputParameterErr(err error) *reguerr.ReguError {
 	return InvalidInputParameterErr.WithError(err)
 }
@@ -58,6 +59,7 @@ func IsInvalidInputParameterErr(err error) bool {
 	return false
 }
 
+// [1004] other user updated: $err
 func NewUpdateConflictErr(err error) *reguerr.ReguError {
 	return UpdateConflictErr.WithError(err)
 }
@@ -97,6 +99,7 @@ import (
 	"gitlab.com/osaki-lab/reguerr"
 )
 
+// [1003] invalid input parameter: %v
 func NewInvalidInputParameterErr(arg1 interface{}) *reguerr.ReguError {
 	return InvalidInputParameterErr.WithArgs(arg1)
 }
@@ -142,6 +145,7 @@ import (
 	"gitlab.com/osaki-lab/reguerr"
 )
 
+// [1003] invalid input parameter: %v: $err
 func NewInvalidInputParameterErr(err error, payload []string) *reguerr.ReguError {
 	return InvalidInputParameterErr.WithError(err).WithArgs(payload)
 }
@@ -192,6 +196,7 @@ import (
 	"gitlab.com/osaki-lab/reguerr"
 )
 
+// [1003] invalid input parameter: str:%v inv:%v: $err
 func NewInvalidInputParameterErr(err error, strArg1 string, intArg1 int) *reguerr.ReguError {
 	return InvalidInputParameterErr.WithError(err).WithArgs(strArg1, intArg1)
 }
@@ -231,6 +236,7 @@ import (
 	"gitlab.com/osaki-lab/reguerr"
 )
 
+// [1003] invalid input parameter: key:%v value:%v: $err
 func NewInvalidInputParameterErr(err error, arg1 interface{}, arg2 interface{}) *reguerr.ReguError {
 	return InvalidInputParameterErr.WithError(err).WithArgs(arg1, arg2)
 }
@@ -278,6 +284,7 @@ func init() {
 	reguerr.DefaultStatusCode = 501
 }
 
+// [1003] invalid input parameter: $err
 func NewInvalidInputParameterErr(err error) *reguerr.ReguError {
 	return InvalidInputParameterErr.WithError(err)
 }
