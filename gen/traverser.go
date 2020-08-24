@@ -124,24 +124,24 @@ func traverseSingle(v ast.Expr) *Decl {
 				return decl
 			}
 			decl.StatusCode, _ = strconv.Atoi(arg0.Value)
-		case "TraceLevel":
+		case "Trace":
 			decl.LogLevelEnable = true
-			decl.LogLevel = reguerr.TraceLevel
-		case "DebugLevel":
+			decl.LogLevel = reguerr.Trace
+		case "Debug":
 			decl.LogLevelEnable = true
-			decl.LogLevel = reguerr.DebugLevel
-		case "InfoLevel":
+			decl.LogLevel = reguerr.Debug
+		case "Info":
 			decl.LogLevelEnable = true
-			decl.LogLevel = reguerr.InfoLevel
-		case "WarnLevel":
+			decl.LogLevel = reguerr.Info
+		case "Warn":
 			decl.LogLevelEnable = true
-			decl.LogLevel = reguerr.WarnLevel
-		case "ErrorLevel":
+			decl.LogLevel = reguerr.Warn
+		case "Error":
 			decl.LogLevelEnable = true
-			decl.LogLevel = reguerr.ErrorLevel
-		case "FatalLevel":
+			decl.LogLevel = reguerr.Error
+		case "Fatal":
 			decl.LogLevelEnable = true
-			decl.LogLevel = reguerr.FatalLevel
+			decl.LogLevel = reguerr.Fatal
 		case "Build":
 			decl.CallBuild = true
 		}

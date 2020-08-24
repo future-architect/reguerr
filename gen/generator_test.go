@@ -44,12 +44,12 @@ import (
 	"gitlab.com/osaki-lab/reguerr"
 )
 
-func NewInvalidInputParameterErr(err error) *reguerr.Error {
+func NewInvalidInputParameterErr(err error) *reguerr.ReguError {
 	return InvalidInputParameterErr.WithError(err)
 }
 
 func IsInvalidInputParameterErr(err error) bool {
-	var cerr *reguerr.Error
+	var cerr *reguerr.ReguError
 	if as := errors.As(err, &cerr); as {
 		if cerr.Code() == InvalidInputParameterErr.Code() {
 			return true
@@ -58,12 +58,12 @@ func IsInvalidInputParameterErr(err error) bool {
 	return false
 }
 
-func NewUpdateConflictErr(err error) *reguerr.Error {
+func NewUpdateConflictErr(err error) *reguerr.ReguError {
 	return UpdateConflictErr.WithError(err)
 }
 
 func IsUpdateConflictErr(err error) bool {
-	var cerr *reguerr.Error
+	var cerr *reguerr.ReguError
 	if as := errors.As(err, &cerr); as {
 		if cerr.Code() == UpdateConflictErr.Code() {
 			return true
@@ -97,12 +97,12 @@ import (
 	"gitlab.com/osaki-lab/reguerr"
 )
 
-func NewInvalidInputParameterErr(arg1 interface{}) *reguerr.Error {
+func NewInvalidInputParameterErr(arg1 interface{}) *reguerr.ReguError {
 	return InvalidInputParameterErr.WithArgs(arg1)
 }
 
 func IsInvalidInputParameterErr(err error) bool {
-	var cerr *reguerr.Error
+	var cerr *reguerr.ReguError
 	if as := errors.As(err, &cerr); as {
 		if cerr.Code() == InvalidInputParameterErr.Code() {
 			return true
@@ -142,12 +142,12 @@ import (
 	"gitlab.com/osaki-lab/reguerr"
 )
 
-func NewInvalidInputParameterErr(err error, payload []string) *reguerr.Error {
+func NewInvalidInputParameterErr(err error, payload []string) *reguerr.ReguError {
 	return InvalidInputParameterErr.WithError(err).WithArgs(payload)
 }
 
 func IsInvalidInputParameterErr(err error) bool {
-	var cerr *reguerr.Error
+	var cerr *reguerr.ReguError
 	if as := errors.As(err, &cerr); as {
 		if cerr.Code() == InvalidInputParameterErr.Code() {
 			return true
@@ -192,12 +192,12 @@ import (
 	"gitlab.com/osaki-lab/reguerr"
 )
 
-func NewInvalidInputParameterErr(err error, strArg1 string, intArg1 int) *reguerr.Error {
+func NewInvalidInputParameterErr(err error, strArg1 string, intArg1 int) *reguerr.ReguError {
 	return InvalidInputParameterErr.WithError(err).WithArgs(strArg1, intArg1)
 }
 
 func IsInvalidInputParameterErr(err error) bool {
-	var cerr *reguerr.Error
+	var cerr *reguerr.ReguError
 	if as := errors.As(err, &cerr); as {
 		if cerr.Code() == InvalidInputParameterErr.Code() {
 			return true
@@ -231,12 +231,12 @@ import (
 	"gitlab.com/osaki-lab/reguerr"
 )
 
-func NewInvalidInputParameterErr(err error, arg1 interface{}, arg2 interface{}) *reguerr.Error {
+func NewInvalidInputParameterErr(err error, arg1 interface{}, arg2 interface{}) *reguerr.ReguError {
 	return InvalidInputParameterErr.WithError(err).WithArgs(arg1, arg2)
 }
 
 func IsInvalidInputParameterErr(err error) bool {
-	var cerr *reguerr.Error
+	var cerr *reguerr.ReguError
 	if as := errors.As(err, &cerr); as {
 		if cerr.Code() == InvalidInputParameterErr.Code() {
 			return true
@@ -261,7 +261,7 @@ func IsInvalidInputParameterErr(err error) bool {
 					},
 				},
 				opts: []Option{
-						DefaultErrorLevel(reguerr.WarnLevel),
+						DefaultErrorLevel(reguerr.Warn),
 						DefaultStatusCode(501),
 				},
 			},
@@ -274,18 +274,18 @@ import (
 )
 
 func init() {
-	reguerr.DefaultErrorLevel = reguerr.WarnLevel
+	reguerr.DefaultErrorLevel = reguerr.Warn
 	reguerr.DefaultStatusCode = 501
 }
 
-func NewInvalidInputParameterErr(err error) *reguerr.Error {
+func NewInvalidInputParameterErr(err error) *reguerr.ReguError {
 	return InvalidInputParameterErr.WithError(err)
 }
 
 func IsInvalidInputParameterErr(err error) bool {
-	var cerr *reguerr.Error
+	var cerr *reguerr.ReguError
 	if as := errors.As(err, &cerr); as {
-		if cerr.Code == InvalidInputParameterErr.Code {
+		if cerr.Code() == InvalidInputParameterErr.Code() {
 			return true
 		}
 	}

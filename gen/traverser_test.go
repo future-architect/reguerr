@@ -55,7 +55,7 @@ import (
 )
 
 var InvalidInputParameterErr = reguerr.New("1003", "invalid input parameter: %v").
-		DisableError().WarnLevel().WithStatusCode(404).Build()
+		DisableError().Warn().WithStatusCode(404).Build()
 `,
 			want: &File{
 				PkgName: "example",
@@ -64,7 +64,7 @@ var InvalidInputParameterErr = reguerr.New("1003", "invalid input parameter: %v"
 						Name:             "InvalidInputParameterErr",
 						Code:             "1003",
 						Format:           "invalid input parameter: %v",
-						LogLevel:         reguerr.WarnLevel,
+						LogLevel:         reguerr.Warn,
 						LogLevelEnable:   true,
 						StatusCode:       404,
 						StatusCodeEnable: true,
