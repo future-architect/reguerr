@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/olekukonko/tablewriter"
 	"io"
+	"math"
 	"strings"
 )
 
@@ -37,6 +38,7 @@ func GenerateMarkdown(w io.Writer, decls []*Decl, opts ...Option) error {
 	fmt.Fprintln(w)
 
 	table := tablewriter.NewWriter(w)
+	table.SetColWidth(math.MaxInt32) // tablewriter default column size is 30. this is too small.
 	table.SetHeader([]string{"Code", "Name", "LogLevel", "StatusCode", "Format"})
 	table.SetBorders(tablewriter.Border{Left: true, Top: false, Right: true, Bottom: false})
 	table.SetCenterSeparator("|")
