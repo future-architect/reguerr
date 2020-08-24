@@ -91,6 +91,13 @@ type ReguError struct {
 	err        error         // wrapped error that you hope
 }
 
+// ReguError must meet error interface
+var _ error = &ReguError{}
+
+func (e *ReguError) Unwrap() error {
+	return e.err
+}
+
 func (e *ReguError) WithArgs(args ...interface{}) *ReguError {
 	return &ReguError{
 		code:       e.code,
