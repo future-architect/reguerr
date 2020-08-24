@@ -16,12 +16,12 @@ func New(code, format string) *Builder {
 }
 
 func (b *Builder) Label(index int, name string, goType interface{}) *Builder {
-	// コード解析用の関数なので、内部的には何もしないしなくて良い
+	// ignore because this func is for analysis
 	return b
 }
 
 func (b *Builder) DisableError() *Builder {
-	// 解析用途なのにで、何もしない
+	// ignore because this func is for analysis
 	return b
 }
 
