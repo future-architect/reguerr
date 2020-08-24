@@ -7,7 +7,7 @@ import (
 )
 
 var (
-	DefaultErrorLevel = ErrorLevel
+	DefaultErrorLevel = Error
 	DefaultStatusCode = 500
 )
 
@@ -16,12 +16,13 @@ var (
 type Level int
 
 const (
-	TraceLevel Level = iota + 1
-	DebugLevel
-	InfoLevel
-	WarnLevel
-	ErrorLevel
-	FatalLevel
+	Trace Level = iota + 1
+	Debug
+	Info
+	Warn
+	Error
+	Fatal
+	Unknown
 )
 
 func (i Level) Equals(arg Level) bool {
@@ -30,24 +31,58 @@ func (i Level) Equals(arg Level) bool {
 
 func NewLevel(s string) (Level, error) {
 	switch strings.ToLower(s) {
-	case strings.ToLower(TraceLevel.String()):
-		return TraceLevel, nil
-	case strings.ToLower(DebugLevel.String()):
-		return DebugLevel, nil
-	case strings.ToLower(InfoLevel.String()):
-		return InfoLevel, nil
-	case strings.ToLower(WarnLevel.String()):
-		return WarnLevel, nil
-	case strings.ToLower(ErrorLevel.String()):
-		return ErrorLevel, nil
-	case strings.ToLower(FatalLevel.String()):
-		return FatalLevel, nil
+	case strings.ToLower(Trace.String()):
+		return Trace, nil
+	case strings.ToLower(Debug.String()):
+		return Debug, nil
+	case strings.ToLower(Info.String()):
+		return Info, nil
+	case strings.ToLower(Warn.String()):
+		return Warn, nil
+	case strings.ToLower(Error.String()):
+		return Error, nil
+	case strings.ToLower(Fatal.String()):
+		return Fatal, nil
 	default:
-		return TraceLevel, errors.New("unknown error level")
+		return Trace, errors.New("unknown error level")
 	}
 }
 
-type Error struct {
+func ErrorOf(err error) (*ReguError, bool) {
+	var cerr *ReguError
+	if as := errors.As(err, &cerr); as {
+		return cerr, true
+	}
+	return nil, false
+}
+
+func CodeOf(err error) (string, bool) {
+	var cerr *ReguError
+	if as := errors.As(err, &cerr); as {
+		return cerr.Code(), true
+	}
+	return "", false
+}
+
+func LevelOf(err error) (Level, bool) {
+	var cerr *ReguError
+	if as := errors.As(err, &cerr); as {
+		return cerr.Level(), true
+	}
+	return Unknown, false
+}
+
+func StatusOf(err error) (int, bool) {
+	var cerr *ReguError
+	if as := errors.As(err, &cerr); as {
+		return cerr.StatusCode(), true
+	}
+	return 0, false
+}
+
+type Code string
+
+type ReguError struct {
 	code       string        // error code that you can define each error for your error handling.
 	level      Level         // error Level. default:error
 	statusCode int           // set http-status-code or exit-code. default:500
@@ -56,8 +91,8 @@ type Error struct {
 	err        error         // wrapped error that you hope
 }
 
-func (e *Error) WithArgs(args ...interface{}) *Error {
-	return &Error{
+func (e *ReguError) WithArgs(args ...interface{}) *ReguError {
+	return &ReguError{
 		code:       e.code,
 		level:      e.level,
 		statusCode: e.statusCode,
@@ -67,8 +102,8 @@ func (e *Error) WithArgs(args ...interface{}) *Error {
 	}
 }
 
-func (e *Error) WithError(err error) *Error {
-	return &Error{
+func (e *ReguError) WithError(err error) *ReguError {
+	return &ReguError{
 		code:       e.code,
 		level:      e.level,
 		statusCode: e.statusCode,
@@ -78,50 +113,55 @@ func (e *Error) WithError(err error) *Error {
 	}
 }
 
-func (e *Error) Code() string {
+func (e *ReguError) Code() string {
 	return e.code
 }
 
-func (e *Error) StatusCode() int {
+func (e *ReguError) StatusCode() int {
 	return e.statusCode
 }
 
-func (e *Error) Message() string {
+func (e *ReguError) Message() string {
 	return fmt.Sprintf(e.format, e.args)
 }
 
-func (e *Error) Error() string {
+func (e *ReguError) Level() Level {
+	return e.level
+}
+
+func (e *ReguError) Error() string {
 	if e.err != nil {
 		return fmt.Sprintf("[%s]%s: %v", e.code, e.Message(), e.err)
 	}
 	return fmt.Sprintf("[%s]%s", e.code, e.Message())
 }
-func (e *Error) IsTraceLevel() bool {
-	return e.level == TraceLevel
+
+func (e *ReguError) IsTraceLevel() bool {
+	return e.level == Trace
 }
 
-func (e *Error) IsDebugLevel() bool {
-	return e.level == DebugLevel
+func (e *ReguError) IsDebugLevel() bool {
+	return e.level == Debug
 }
 
-func (e *Error) IsInfoLevel() bool {
-	return e.level == InfoLevel
+func (e *ReguError) IsInfoLevel() bool {
+	return e.level == Info
 }
 
-func (e *Error) IsWarnLevel() bool {
-	return e.level == WarnLevel
+func (e *ReguError) IsWarnLevel() bool {
+	return e.level == Warn
 }
 
-func (e *Error) IsErrorLevel() bool {
-	return e.level == ErrorLevel
+func (e *ReguError) IsErrorLevel() bool {
+	return e.level == Error
 }
 
-func (e *Error) IsFatalLevel() bool {
-	return e.level == FatalLevel
+func (e *ReguError) IsFatalLevel() bool {
+	return e.level == Fatal
 }
 
-func (e *Error) withLevel(lvl Level) *Error {
-	return &Error{
+func (e *ReguError) withLevel(lvl Level) *ReguError {
+	return &ReguError{
 		code:       e.code,
 		level:      lvl,
 		statusCode: e.statusCode,

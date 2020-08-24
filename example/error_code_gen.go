@@ -6,12 +6,12 @@ import (
 	"gitlab.com/osaki-lab/reguerr"
 )
 
-func NewPermissionDeniedErr(err error) *reguerr.Error {
+func NewPermissionDeniedErr(err error) *reguerr.ReguError {
 	return PermissionDeniedErr.WithError(err)
 }
 
 func IsPermissionDeniedErr(err error) bool {
-	var cerr *reguerr.Error
+	var cerr *reguerr.ReguError
 	if as := errors.As(err, &cerr); as {
 		if cerr.Code() == PermissionDeniedErr.Code() {
 			return true
@@ -20,12 +20,12 @@ func IsPermissionDeniedErr(err error) bool {
 	return false
 }
 
-func NewUpdateConflictErr(err error, arg1 interface{}) *reguerr.Error {
+func NewUpdateConflictErr(err error, arg1 interface{}) *reguerr.ReguError {
 	return UpdateConflictErr.WithError(err).WithArgs(arg1)
 }
 
 func IsUpdateConflictErr(err error) bool {
-	var cerr *reguerr.Error
+	var cerr *reguerr.ReguError
 	if as := errors.As(err, &cerr); as {
 		if cerr.Code() == UpdateConflictErr.Code() {
 			return true
@@ -34,12 +34,12 @@ func IsUpdateConflictErr(err error) bool {
 	return false
 }
 
-func NewInvalidInputParameterErr(err error, payload map[string]interface{}) *reguerr.Error {
+func NewInvalidInputParameterErr(err error, payload map[string]interface{}) *reguerr.ReguError {
 	return InvalidInputParameterErr.WithError(err).WithArgs(payload)
 }
 
 func IsInvalidInputParameterErr(err error) bool {
-	var cerr *reguerr.Error
+	var cerr *reguerr.ReguError
 	if as := errors.As(err, &cerr); as {
 		if cerr.Code() == InvalidInputParameterErr.Code() {
 			return true
@@ -48,12 +48,12 @@ func IsInvalidInputParameterErr(err error) bool {
 	return false
 }
 
-func NewUserTypeUnregisterErr() *reguerr.Error {
+func NewUserTypeUnregisterErr() *reguerr.ReguError {
 	return UserTypeUnregisterErr
 }
 
 func IsUserTypeUnregisterErr(err error) bool {
-	var cerr *reguerr.Error
+	var cerr *reguerr.ReguError
 	if as := errors.As(err, &cerr); as {
 		if cerr.Code() == UserTypeUnregisterErr.Code() {
 			return true
@@ -62,12 +62,12 @@ func IsUserTypeUnregisterErr(err error) bool {
 	return false
 }
 
-func NewNotFoundOperationIDErr(err error) *reguerr.Error {
+func NewNotFoundOperationIDErr(err error) *reguerr.ReguError {
 	return NotFoundOperationIDErr.WithError(err)
 }
 
 func IsNotFoundOperationIDErr(err error) bool {
-	var cerr *reguerr.Error
+	var cerr *reguerr.ReguError
 	if as := errors.As(err, &cerr); as {
 		if cerr.Code() == NotFoundOperationIDErr.Code() {
 			return true

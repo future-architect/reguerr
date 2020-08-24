@@ -1,12 +1,12 @@
 package reguerr
 
 type Builder struct {
-	err *Error
+	err *ReguError
 }
 
 func New(code, format string) *Builder {
 	return &Builder{
-		err: &Error{
+		err: &ReguError{
 			code:       code,
 			format:     format,
 			level:      DefaultErrorLevel,
@@ -27,43 +27,43 @@ func (b *Builder) DisableError() *Builder {
 
 func (b *Builder) TraceLevel() *Builder {
 	return &Builder{
-		err: b.err.withLevel(TraceLevel),
+		err: b.err.withLevel(Trace),
 	}
 }
 
 func (b *Builder) DebugLevel() *Builder {
 	return &Builder{
-		err: b.err.withLevel(DebugLevel),
+		err: b.err.withLevel(Debug),
 	}
 }
 
 func (b *Builder) InfoLevel() *Builder {
 	return &Builder{
-		b.err.withLevel(InfoLevel),
+		b.err.withLevel(Info),
 	}
 }
 
 func (b *Builder) WarnLevel() *Builder {
 	return &Builder{
-		b.err.withLevel(WarnLevel),
+		b.err.withLevel(Warn),
 	}
 }
 
 func (b *Builder) ErrorLevel() *Builder {
 	return &Builder{
-		b.err.withLevel(ErrorLevel),
+		b.err.withLevel(Error),
 	}
 }
 
 func (b *Builder) FatalLevel() *Builder {
 	return &Builder{
-		b.err.withLevel(FatalLevel),
+		b.err.withLevel(Fatal),
 	}
 }
 
 func (b *Builder) WithStatusCode(statusCode int) *Builder {
 	return &Builder{
-		err: &Error{
+		err: &ReguError{
 			code:       b.err.code,
 			level:      b.err.level,
 			statusCode: statusCode,
@@ -74,6 +74,6 @@ func (b *Builder) WithStatusCode(statusCode int) *Builder {
 	}
 }
 
-func (b *Builder) Build() *Error {
+func (b *Builder) Build() *ReguError {
 	return b.err
 }

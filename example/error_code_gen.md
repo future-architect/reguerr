@@ -6,4 +6,4 @@
 | 1002 | UpdateConflictErr        | Error    |        500 | other user updated: key=%s  |
 | 1003 | InvalidInputParameterErr | Error    |        500 | invalid input parameter: %v |
 | 1005 | UserTypeUnregisterErr    | Error    |        500 | not found user type         |
-| 1004 | NotFoundOperationIDErr   | Warn     |        404 | not found operation id      |
+| 1004 | NotFoundOperationIDErr   | Error    |        404 | not found operation id      |

@@ -8,14 +8,14 @@ import (
 func TestCodeError_Error(t *testing.T) {
 	tests := []struct {
 		name string
-		in   Error
+		in   ReguError
 		want string
 	}{
 		{
 			name: "",
-			in: Error{
+			in: ReguError{
 				code:       "1003",
-				level:      ErrorLevel,
+				level:      Error,
 				statusCode: 500,
 				format:     "invalid input parameter: %v",
 				args:       []interface{}{`{"key":"hoge"}`},
