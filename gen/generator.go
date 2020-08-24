@@ -20,7 +20,7 @@ import (
 {{if .Setting.EnableInit}}
 func init() {
 	{{if .Setting.IsOverwriteErrorLevel -}}
-	reguerr.DefaultErrorLevel = reguerr.{{.Setting.ErrorLevel}}
+	reguerr.DefaultErrorLevel = reguerr.{{.Setting.Level}}
 	{{end -}}
 	{{if .Setting.IsOverwriteStatusCode -}}
 	reguerr.DefaultStatusCode = {{.Setting.StatusCode}}

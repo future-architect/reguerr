@@ -25,37 +25,37 @@ func (b *Builder) DisableError() *Builder {
 	return b
 }
 
-func (b *Builder) TraceLevel() *Builder {
+func (b *Builder) Trace() *Builder {
 	return &Builder{
 		err: b.err.withLevel(Trace),
 	}
 }
 
-func (b *Builder) DebugLevel() *Builder {
+func (b *Builder) Debug() *Builder {
 	return &Builder{
 		err: b.err.withLevel(Debug),
 	}
 }
 
-func (b *Builder) InfoLevel() *Builder {
+func (b *Builder) Info() *Builder {
 	return &Builder{
 		b.err.withLevel(Info),
 	}
 }
 
-func (b *Builder) WarnLevel() *Builder {
+func (b *Builder) Warn() *Builder {
 	return &Builder{
 		b.err.withLevel(Warn),
 	}
 }
 
-func (b *Builder) ErrorLevel() *Builder {
+func (b *Builder) Error() *Builder {
 	return &Builder{
 		b.err.withLevel(Error),
 	}
 }
 
-func (b *Builder) FatalLevel() *Builder {
+func (b *Builder) Fatal() *Builder {
 	return &Builder{
 		b.err.withLevel(Fatal),
 	}

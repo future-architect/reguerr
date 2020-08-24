@@ -121,19 +121,19 @@ func (e *ReguError) StatusCode() int {
 	return e.statusCode
 }
 
-func (e *ReguError) Message() string {
-	return fmt.Sprintf(e.format, e.args)
-}
-
 func (e *ReguError) Level() Level {
 	return e.level
 }
 
 func (e *ReguError) Error() string {
 	if e.err != nil {
-		return fmt.Sprintf("[%s]%s: %v", e.code, e.Message(), e.err)
+		return fmt.Sprintf("[%s]%s: %v", e.code, e.message(), e.err)
 	}
-	return fmt.Sprintf("[%s]%s", e.code, e.Message())
+	return fmt.Sprintf("code[%s]%s", e.code, e.message())
+}
+
+func (e *ReguError) message() string {
+	return fmt.Sprintf(e.format, e.args)
 }
 
 func (e *ReguError) IsTraceLevel() bool {

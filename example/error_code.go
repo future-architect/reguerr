@@ -23,6 +23,6 @@ var (
 
 	// Change log level and exitCode
 	NotFoundOperationIDErr = reguerr.New("1004", "not found operation id").
-		WarnLevel().WithStatusCode(404).
+		Warn().WithStatusCode(404).
 		Build()
 )

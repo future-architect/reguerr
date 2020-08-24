@@ -15,8 +15,9 @@ func GenerateMarkdown(w io.Writer, decls []*Decl, opts ...Option) error {
 
 	data := make([][]string, 0, len(decls))
 	for _, v := range decls {
-		if v.LogLevel == 0 {
-			v.LogLevel = setting.ErrorLevel
+		if !v.LogLevelEnable {
+			// when unsigned loglevel then setting from option
+			v.LogLevel = setting.Level
 		}
 		if v.StatusCode == 0 {
 			v.StatusCode = setting.StatusCode
