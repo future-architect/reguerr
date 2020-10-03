@@ -6,7 +6,8 @@ variables:
 stages:
   - build
   - test
-before_scipt:
+
+before_script:
   - mkdir -p /go/src/gitlab.com/osaki-lab/
   - cp -fr ../repo /go/src/gitlab.com/osaki-lab/
   - /go/src/gitlab.com/osaki-lab/reguerr/
@@ -20,3 +21,5 @@ test:
   stage: test
   script:
     - go test
+  dependencies:
+    - build
