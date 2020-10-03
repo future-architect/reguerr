@@ -1,0 +1,22 @@
+image: golang:1.14
+
+variables:
+  REPO_NAME: gitlab.com/osaki-lab/reguerr
+
+stages:
+  - build
+  - test
+before_scipt:
+  - mkdir -p /go/src/gitlab.com/osaki-lab/
+  - cp -fr ../repo /go/src/gitlab.com/osaki-lab/
+  - /go/src/gitlab.com/osaki-lab/reguerr/
+
+build:
+  stage: build
+  script:
+    - go build
+
+test:
+  stage: test
+  script:
+    - go test
