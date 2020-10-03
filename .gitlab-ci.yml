@@ -9,7 +9,7 @@ stages:
 
 before_script:
   - mkdir -p /go/src/gitlab.com/osaki-lab/
-  - cp -fr ../repo /go/src/gitlab.com/osaki-lab/
+  - cp -fr ../reguerr /go/src/gitlab.com/osaki-lab/
   - /go/src/gitlab.com/osaki-lab/reguerr/
 
 build:
