@@ -141,7 +141,6 @@ func (e *ReguError) Error() string {
 
 func (e *ReguError) message() string {
 	count := countPlaceHolder(e.format)
-	fmt.Println(count, len(e.args))
 	if count == 0 {
 		return e.format
 	}

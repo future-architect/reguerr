@@ -106,7 +106,7 @@ func TestError(t *testing.T) {
 				level:      Error,
 				statusCode: 500,
 				format:     "other user updated: key=%s",
-				args:       []interface{}{"KEY"},
+				args:       []interface{}{"KEY", "KEY2"},
 				err:        inErr,
 			},
 			wantString: "[1003] other user updated: key=[KEY]: internal error",
