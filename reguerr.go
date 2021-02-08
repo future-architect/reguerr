@@ -140,7 +140,10 @@ func (e *ReguError) Error() string {
 }
 
 func (e *ReguError) message() string {
-	return fmt.Sprintf(e.format, e.args)
+	if e.args != nil {
+		return fmt.Sprintf(e.format, e.args)
+	}
+	return e.format
 }
 
 func (e *ReguError) IsTraceLevel() bool {
