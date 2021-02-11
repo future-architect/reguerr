@@ -17,7 +17,7 @@ func TestCodeError_Error(t *testing.T) {
 		want string
 	}{
 		{
-			name: "sucess path",
+			name: "",
 			in: ReguError{
 				code:       "1003",
 				level:      Error,
@@ -31,14 +31,14 @@ func TestCodeError_Error(t *testing.T) {
 		{
 			name: "no placeholder",
 			in: ReguError{
-				code:       "1003",
+				code:       "1001",
 				level:      Error,
 				statusCode: 500,
 				format:     "Permission Denied",
 				args:       []interface{}{},
 				err:        inErr,
 			},
-			want: "[1003] Permission Denied: internal error",
+			want: "[1001] Permission Denied: internal error",
 		},
 	}
 	for _, tt := range tests {
