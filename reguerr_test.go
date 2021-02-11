@@ -35,34 +35,10 @@ func TestCodeError_Error(t *testing.T) {
 				level:      Error,
 				statusCode: 500,
 				format:     "Permission Denied",
-				args:       []interface{}{`{"key":"hoge"}`},
+				args:       []interface{}{},
 				err:        inErr,
 			},
 			want: "[1003] Permission Denied: internal error",
-		},
-		{
-			name: "too many args",
-			in: ReguError{
-				code:       "1003",
-				level:      Error,
-				statusCode: 500,
-				format:     "other user updated: key=%s",
-				args:       []interface{}{"KEY", "KEY2"},
-				err:        inErr,
-			},
-			want: "[1003] other user updated: key=[KEY]: internal error",
-		},
-		{
-			name: "too few args",
-			in: ReguError{
-				code:       "1003",
-				level:      Error,
-				statusCode: 500,
-				format:     "other user updated: key=%s, %s",
-				args:       []interface{}{"KEY"},
-				err:        inErr,
-			},
-			want: "[1003] other user updated: key=[KEY]: internal error",
 		},
 	}
 	for _, tt := range tests {

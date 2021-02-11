@@ -140,14 +140,10 @@ func (e *ReguError) Error() string {
 }
 
 func (e *ReguError) message() string {
-	count := countPlaceHolder(e.format)
-	if count == 0 {
+	if len(e.args) == 0 {
 		return e.format
 	}
-	if count > len(e.args) {
-		return fmt.Sprintf(e.format, e.args)
-	}
-	return fmt.Sprintf(e.format, e.args[:count])
+	return fmt.Sprintf(e.format, e.args)
 }
 
 func (e *ReguError) IsTraceLevel() bool {
@@ -182,8 +178,4 @@ func (e *ReguError) withLevel(lvl Level) *ReguError {
 		format:     e.format,
 		err:        e.err,
 	}
-}
-
-func countPlaceHolder(str string) int {
-	return strings.Count(str, "%")
 }
