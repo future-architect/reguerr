@@ -43,7 +43,7 @@ func (d Decl) Args() string {
 
 	argNo := 1
 	labelMap := d.labelMap()
-	for i, _ := range verbs {
+	for i := range verbs {
 		if resp != "" {
 			resp += ","
 		}
@@ -68,7 +68,7 @@ func (d Decl) ArgValues() string {
 
 	argNo := 1
 	labelMap := d.labelMap()
-	for i, _ := range verbs {
+	for i := range verbs {
 		if resp != "" {
 			resp += ","
 		}
