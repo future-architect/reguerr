@@ -2,8 +2,9 @@ package gen
 
 import (
 	"fmt"
-	"gitlab.com/osaki-lab/reguerr"
 	"strconv"
+
+	"gitlab.com/osaki-lab/reguerr"
 )
 
 type File struct {
@@ -42,7 +43,7 @@ func (d Decl) Args() string {
 
 	argNo := 1
 	labelMap := d.labelMap()
-	for i, _ := range verbs {
+	for i := range verbs {
 		if resp != "" {
 			resp += ","
 		}
@@ -67,7 +68,7 @@ func (d Decl) ArgValues() string {
 
 	argNo := 1
 	labelMap := d.labelMap()
-	for i, _ := range verbs {
+	for i := range verbs {
 		if resp != "" {
 			resp += ","
 		}
@@ -94,8 +95,8 @@ func (d Decl) labelMap() map[int]Label {
 
 func (d Decl) MessageTemplate() string {
 	if d.DisableErr {
-		return fmt.Sprintf("[%s] %s", d.Code, d.Format)
+		return fmt.Sprintf("New%s is the error indicating [%s] %s", d.Name, d.Code, d.Format)
 	}
-	return fmt.Sprintf("[%s] %s: $err", d.Code, d.Format)
+	return fmt.Sprintf("New%s is the error indicating [%s] %s: $err", d.Name, d.Code, d.Format)
 
 }
