@@ -6,6 +6,11 @@ import (
 )
 
 func TestCodeError_Error(t *testing.T) {
+
+	var (
+		inErr = errors.New("internal error")
+	)
+
 	tests := []struct {
 		name string
 		in   ReguError
@@ -19,9 +24,21 @@ func TestCodeError_Error(t *testing.T) {
 				statusCode: 500,
 				format:     "invalid input parameter: %v",
 				args:       []interface{}{`{"key":"hoge"}`},
-				err:        errors.New("internal error"),
+				err:        inErr,
 			},
-			want: `[1003]invalid input parameter: [{"key":"hoge"}]: internal error`,
+			want: `[1003] invalid input parameter: [{"key":"hoge"}]: internal error`,
+		},
+		{
+			name: "no placeholder",
+			in: ReguError{
+				code:       "1001",
+				level:      Error,
+				statusCode: 500,
+				format:     "Permission Denied",
+				args:       []interface{}{},
+				err:        inErr,
+			},
+			want: "[1001] Permission Denied: internal error",
 		},
 	}
 	for _, tt := range tests {
