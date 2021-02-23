@@ -53,8 +53,7 @@ var generateCmd = &cobra.Command{
 
 		f, err := parser.ParseFile(token.NewFileSet(), path, nil, 0)
 		if err != nil {
-			fmt.Printf("Failed to parse file: %v\n", err)
-			return nil
+			return fmt.Errorf("failed to parse file: %v\n", err)
 		}
 		//ast.Print(fset, f)
 
@@ -122,8 +121,7 @@ var validateCmd = &cobra.Command{
 
 		f, err := parser.ParseFile(token.NewFileSet(), path, nil, 0)
 		if err != nil {
-			fmt.Printf("Failed to parse file: %v\n", err)
-			return nil
+			return fmt.Errorf("failed to parse file: %v\n", err)
 		}
 
 		traverse, err := gen.Traverse(f)
