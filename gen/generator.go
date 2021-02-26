@@ -30,17 +30,18 @@ func init() {
 
 {{range .Params}}
 {{if .DisableErr}}
-// {{.MessageTemplate}}
+// {{.MessageNewErrTemplate}}
 func New{{.Name}}({{if .ExistArgs}}{{.Args}}{{end}}) *reguerr.ReguError {
 	return {{.Name}}{{if .ExistArgs}}.WithArgs({{.ArgValues}}){{end}}
 }
 {{else}}
-// {{.MessageTemplate}}
+// {{.MessageNewErrTemplate}}
 func New{{.Name}}(err error{{if .ExistArgs}}, {{.Args}}{{end}}) *reguerr.ReguError {
 	return {{.Name}}.WithError(err){{if .ExistArgs}}.WithArgs({{.ArgValues}}){{end}}
 }
 {{end}}
 
+// {{.MessageIsErrTemplate}}
 func Is{{.Name}}(err error) bool {
 	var cerr *reguerr.ReguError
 	if as := errors.As(err, &cerr); as {

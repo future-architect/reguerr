@@ -6,11 +6,12 @@ import (
 	"gitlab.com/osaki-lab/reguerr"
 )
 
-// NewPermissionDeniedErr is the error indicating [1001] permission denied: $err
+// NewPermissionDeniedErr is the error indicating [1001] permission denied: $err.
 func NewPermissionDeniedErr(err error) *reguerr.ReguError {
 	return PermissionDeniedErr.WithError(err)
 }
 
+// IsPermissionDeniedErr indicates if the passed in error is from the error with code [1001].
 func IsPermissionDeniedErr(err error) bool {
 	var cerr *reguerr.ReguError
 	if as := errors.As(err, &cerr); as {
@@ -21,11 +22,12 @@ func IsPermissionDeniedErr(err error) bool {
 	return false
 }
 
-// NewUpdateConflictErr is the error indicating [1002] other user updated: key=%s: $err
+// NewUpdateConflictErr is the error indicating [1002] other user updated: key=%s: $err.
 func NewUpdateConflictErr(err error, arg1 interface{}) *reguerr.ReguError {
 	return UpdateConflictErr.WithError(err).WithArgs(arg1)
 }
 
+// IsUpdateConflictErr indicates if the passed in error is from the error with code [1002].
 func IsUpdateConflictErr(err error) bool {
 	var cerr *reguerr.ReguError
 	if as := errors.As(err, &cerr); as {
@@ -36,11 +38,12 @@ func IsUpdateConflictErr(err error) bool {
 	return false
 }
 
-// NewInvalidInputParameterErr is the error indicating [1003] invalid input parameter: %v: $err
+// NewInvalidInputParameterErr is the error indicating [1003] invalid input parameter: %v: $err.
 func NewInvalidInputParameterErr(err error, payload map[string]interface{}) *reguerr.ReguError {
 	return InvalidInputParameterErr.WithError(err).WithArgs(payload)
 }
 
+// IsInvalidInputParameterErr indicates if the passed in error is from the error with code [1003].
 func IsInvalidInputParameterErr(err error) bool {
 	var cerr *reguerr.ReguError
 	if as := errors.As(err, &cerr); as {
@@ -51,11 +54,12 @@ func IsInvalidInputParameterErr(err error) bool {
 	return false
 }
 
-// NewUserTypeUnregisterErr is the error indicating [1005] not found user type
+// NewUserTypeUnregisterErr is the error indicating [1005] not found user type.
 func NewUserTypeUnregisterErr() *reguerr.ReguError {
 	return UserTypeUnregisterErr
 }
 
+// IsUserTypeUnregisterErr indicates if the passed in error is from the error with code [1005].
 func IsUserTypeUnregisterErr(err error) bool {
 	var cerr *reguerr.ReguError
 	if as := errors.As(err, &cerr); as {
@@ -66,11 +70,12 @@ func IsUserTypeUnregisterErr(err error) bool {
 	return false
 }
 
-// NewNotFoundOperationIDErr is the error indicating [1004] not found operation id: $err
+// NewNotFoundOperationIDErr is the error indicating [1004] not found operation id: $err.
 func NewNotFoundOperationIDErr(err error) *reguerr.ReguError {
 	return NotFoundOperationIDErr.WithError(err)
 }
 
+// IsNotFoundOperationIDErr indicates if the passed in error is from the error with code [1004].
 func IsNotFoundOperationIDErr(err error) bool {
 	var cerr *reguerr.ReguError
 	if as := errors.As(err, &cerr); as {

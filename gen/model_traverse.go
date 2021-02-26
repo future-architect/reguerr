@@ -93,10 +93,13 @@ func (d Decl) labelMap() map[int]Label {
 	return m
 }
 
-func (d Decl) MessageTemplate() string {
+func (d Decl) MessageNewErrTemplate() string {
 	if d.DisableErr {
-		return fmt.Sprintf("New%s is the error indicating [%s] %s", d.Name, d.Code, d.Format)
+		return fmt.Sprintf("New%s is the error indicating [%s] %s.", d.Name, d.Code, d.Format)
 	}
-	return fmt.Sprintf("New%s is the error indicating [%s] %s: $err", d.Name, d.Code, d.Format)
+	return fmt.Sprintf("New%s is the error indicating [%s] %s: $err.", d.Name, d.Code, d.Format)
+}
 
+func (d Decl) MessageIsErrTemplate() string {
+	return fmt.Sprintf("Is%s indicates if the passed in error is from the error with code [%s].", d.Name, d.Code)
 }
