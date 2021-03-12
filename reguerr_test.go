@@ -17,7 +17,7 @@ func TestCodeError_Error(t *testing.T) {
 		want string
 	}{
 		{
-			name: "",
+			name: "single argument",
 			in: ReguError{
 				code:       "1003",
 				level:      Error,
@@ -26,7 +26,19 @@ func TestCodeError_Error(t *testing.T) {
 				args:       []interface{}{`{"key":"hoge"}`},
 				err:        inErr,
 			},
-			want: `[1003] invalid input parameter: [{"key":"hoge"}]: internal error`,
+			want: `[1003] invalid input parameter: {"key":"hoge"}: internal error`,
+		},
+		{
+			name: "multiple arguments",
+			in: ReguError{
+				code:       "1004",
+				level:      Error,
+				statusCode: 500,
+				format:     "invalid input user=%s message=%s",
+				args:       []interface{}{"user", "test"},
+				err:        inErr,
+			},
+			want: `[1004] invalid input user=user message=test: internal error`,
 		},
 		{
 			name: "no placeholder",

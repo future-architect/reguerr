@@ -143,7 +143,7 @@ func (e *ReguError) message() string {
 	if len(e.args) == 0 {
 		return e.format
 	}
-	return fmt.Sprintf(e.format, e.args)
+	return fmt.Sprintf(e.format, e.args...)
 }
 
 func (e *ReguError) IsTraceLevel() bool {
