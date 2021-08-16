@@ -1,3 +1,5 @@
+![logo](logo/reguerr_logo.png)
+
 ### reguerr
 
 reguerr - Code generator for systematic error handling
