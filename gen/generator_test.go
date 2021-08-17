@@ -4,7 +4,7 @@ import (
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
-	"gitlab.com/future-architect/reguerr"
+	"github.com/future-architect/reguerr"
 )
 
 func TestGenerate(t *testing.T) {
@@ -42,7 +42,7 @@ package example
 
 import (
 	"errors"
-	"gitlab.com/future-architect/reguerr"
+	"github.com/future-architect/reguerr"
 )
 
 // NewInvalidInputParameterErr is the error indicating [1003] invalid input parameter: $err.
@@ -99,7 +99,7 @@ package example
 
 import (
 	"errors"
-	"gitlab.com/future-architect/reguerr"
+	"github.com/future-architect/reguerr"
 )
 
 // NewInvalidInputParameterErr is the error indicating [1003] invalid input parameter: %v.
@@ -146,7 +146,7 @@ package example
 
 import (
 	"errors"
-	"gitlab.com/future-architect/reguerr"
+	"github.com/future-architect/reguerr"
 )
 
 // NewInvalidInputParameterErr is the error indicating [1003] invalid input parameter: %v: $err.
@@ -198,7 +198,7 @@ package example
 
 import (
 	"errors"
-	"gitlab.com/future-architect/reguerr"
+	"github.com/future-architect/reguerr"
 )
 
 // NewInvalidInputParameterErr is the error indicating [1003] invalid input parameter: str:%v inv:%v: $err.
@@ -239,7 +239,7 @@ package example
 
 import (
 	"errors"
-	"gitlab.com/future-architect/reguerr"
+	"github.com/future-architect/reguerr"
 )
 
 // NewInvalidInputParameterErr is the error indicating [1003] invalid input parameter: key:%v value:%v: $err.
@@ -283,7 +283,7 @@ package example
 
 import (
 	"errors"
-	"gitlab.com/future-architect/reguerr"
+	"github.com/future-architect/reguerr"
 )
 
 func init() {

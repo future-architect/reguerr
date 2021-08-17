@@ -2,7 +2,7 @@ package gen
 
 import (
 	"fmt"
-	"gitlab.com/future-architect/reguerr"
+	"github.com/future-architect/reguerr"
 	"go/ast"
 	"log"
 	"os"

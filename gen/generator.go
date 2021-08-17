@@ -14,7 +14,7 @@ const scansText = `
 package {{.Package}}
 import (
 	"errors"
-	"gitlab.com/future-architect/reguerr"
+	"github.com/future-architect/reguerr"
 )
 
 {{if .Setting.EnableInit}}

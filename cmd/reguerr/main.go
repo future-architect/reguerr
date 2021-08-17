@@ -15,7 +15,7 @@ limitations under the License.
 */
 package main
 
-import "gitlab.com/osaki-lab/reguerr/cmd"
+import "github.com/future-architect/reguerr/cmd"
 
 func main() {
 	cmd.Execute()

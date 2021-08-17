@@ -1,6 +1,6 @@
 package gen
 
-import "gitlab.com/future-architect/reguerr"
+import "github.com/future-architect/reguerr"
 
 type Setting struct {
 	Level      reguerr.Level

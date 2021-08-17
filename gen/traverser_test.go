@@ -3,7 +3,7 @@ package gen
 import (
 	"github.com/google/go-cmp/cmp"
 	"github.com/google/go-cmp/cmp/cmpopts"
-	"gitlab.com/future-architect/reguerr"
+	"github.com/future-architect/reguerr"
 	"go/parser"
 	"go/token"
 	"testing"
@@ -20,7 +20,7 @@ func TestTraverse(t *testing.T) {
 			args: `package example
 		
 		import (
-			"gitlab.com/future-architect/reguerr"
+			"github.com/future-architect/reguerr"
 		)
 		
 		var (
@@ -51,7 +51,7 @@ func TestTraverse(t *testing.T) {
 			args: `package example
 
 import (
-	"gitlab.com/future-architect/reguerr"
+	"github.com/future-architect/reguerr"
 )
 
 var InvalidInputParameterErr = reguerr.New("1003", "invalid input parameter: %v").
@@ -79,7 +79,7 @@ var InvalidInputParameterErr = reguerr.New("1003", "invalid input parameter: %v"
 			args: `package example
 		
 		import (
-			"gitlab.com/future-architect/reguerr"
+			"github.com/future-architect/reguerr"
 		)
 		
 		var InvalidInputParameterErr = reguerr.New("1003", "invalid input parameter: %v").
@@ -109,7 +109,7 @@ var InvalidInputParameterErr = reguerr.New("1003", "invalid input parameter: %v"
 			args: `package example
 		
 		import (
-			"gitlab.com/future-architect/reguerr"
+			"github.com/future-architect/reguerr"
 		)
 		
 		var InvalidInputParameterErr = reguerr.New("1003", "strArg:%v intArg:%v mapArg:%v").
@@ -152,7 +152,7 @@ var InvalidInputParameterErr = reguerr.New("1003", "invalid input parameter: %v"
 			args: `package example
 		
 		import (
-			"gitlab.com/future-architect/reguerr"
+			"github.com/future-architect/reguerr"
 		)
 		
 		var InvalidInputParameterErr = reguerr.New("1003", "invalid input param")

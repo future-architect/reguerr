@@ -2,7 +2,7 @@ package gen
 
 import (
 	"bytes"
-	"gitlab.com/future-architect/reguerr"
+	"github.com/future-architect/reguerr"
 	"testing"
 )
 

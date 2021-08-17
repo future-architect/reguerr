@@ -1,4 +1,4 @@
-module gitlab.com/future-architect/reguerr
+module github.com/future-architect/reguerr
 
 go 1.14
 
