@@ -14,7 +14,7 @@ const scansText = `
 package {{.Package}}
 import (
 	"errors"
-	"gitlab.com/osaki-lab/reguerr"
+	"gitlab.com/future-architect/reguerr"
 )
 
 {{if .Setting.EnableInit}}

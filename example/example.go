@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
-	"gitlab.com/osaki-lab/reguerr"
+	"gitlab.com/future-architect/reguerr"
 	"net/http"
 )
 

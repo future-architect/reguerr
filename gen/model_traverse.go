@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strconv"
 
-	"gitlab.com/osaki-lab/reguerr"
+	"gitlab.com/future-architect/reguerr"
 )
 
 type File struct {

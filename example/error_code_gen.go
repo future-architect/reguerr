@@ -3,7 +3,7 @@ package example
 
 import (
 	"errors"
-	"gitlab.com/osaki-lab/reguerr"
+	"gitlab.com/future-architect/reguerr"
 )
 
 // NewPermissionDeniedErr is the error indicating [1001] permission denied: $err.
