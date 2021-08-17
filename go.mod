@@ -1,4 +1,4 @@
-module gitlab.com/osaki-lab/reguerr
+module gitlab.com/future-architect/reguerr
 
 go 1.14
 

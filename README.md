@@ -15,7 +15,7 @@ and the log level and response code associated with it.
 ## Installation
 
 ```sh
-go get -u gitlab.com/osaki-lab/reguerr/cmd/reguerr
+go install gitlab.com/future-architect/reguerr/cmd/reguerr@latest
 ```
 
 ## Options
@@ -59,7 +59,7 @@ cat <<EOF > example.go
 package example
 
 import (
-	"gitlab.com/osaki-lab/reguerr"
+	"gitlab.com/future-architect/reguerr"
 )
 
 var (
@@ -87,7 +87,7 @@ Output is bellow format.
 package example
 
 import (
-	"gitlab.com/osaki-lab/reguerr"
+	"gitlab.com/future-architect/reguerr"
 )
 
 func NewPermissionDeniedErr(err error) *reguerr.Error {
@@ -156,7 +156,7 @@ import (
 	"fmt"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
-	"gitlab.com/osaki-lab/reguerr"
+	"gitlab.com/future-architect/reguerr"
 	"net/http"
 )
 
