@@ -18,16 +18,17 @@ package cmd
 import (
 	"bytes"
 	"fmt"
-	"github.com/fatih/color"
-	"github.com/spf13/cobra"
-	"github.com/future-architect/reguerr"
-	"github.com/future-architect/reguerr/gen"
 	"go/parser"
 	"go/token"
 	"io"
 	"os"
 	"path/filepath"
 	"strings"
+
+	"github.com/fatih/color"
+	"github.com/future-architect/reguerr"
+	"github.com/future-architect/reguerr/gen"
+	"github.com/spf13/cobra"
 )
 
 var (
@@ -68,8 +69,8 @@ var generateCmd = &cobra.Command{
 
 		var opts []gen.Option
 		if errLevel != "" {
-			level, err := reguerr.NewLevel(errLevel + "Level")
-			if err != nil{
+			level, err := reguerr.NewLevel(errLevel)
+			if err != nil {
 				return err
 			}
 			opts = append(opts, gen.DefaultErrorLevel(level))

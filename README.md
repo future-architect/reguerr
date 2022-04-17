@@ -15,7 +15,7 @@ and the log level and response code associated with it.
 ## Installation
 
 ```sh
-go install gitlab.com/future-architect/reguerr/cmd/reguerr@latest
+go install github.com/future-architect/reguerr/cmd/reguerr@latest
 ```
 
 ## Options
@@ -46,7 +46,7 @@ Usage:
 
 Flags:
       --defaultErrorLevel string   change default log level(Trace,Debug,Info,Warn,Error,Fatal)
-      --defaultStatusCode int      change default status code (default -1)
+      --defaultStatusCode int      change default status code (default 500)
   -f, --file string                input go file
   -h, --help                       help for generate
 ```
